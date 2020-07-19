@@ -1,10 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { GlobalStyle } from './GlobalStyle.js';
+import styled from 'styled-components';
+import { Route, Switch } from 'react-router-dom';
+import SplashPage from './Components/SplashPage/SplashPage.js';
+import EventContainer from './Containers/EventContainer/EventContainer.js'
+import CreateEvent from './Containers/CreateEvent/CreateEvent.js';
+import MyEvents from './Containers/MyEvents/MyEvents.js';
+const Wrapper = styled.section`
+  display: flex;
+  flex-direction: column;
 
+`
 function App() {
   return (
-    <h1>Drag Time</h1>
+    <Wrapper>
+      <GlobalStyle />
+      <Route exact path='/'component={SplashPage}/>
+      <Route path='/home'component={EventContainer}/>
+      <Route path='/create-event'component={CreateEvent}/>
+      <Route path='/my-events'component={MyEvents}/>
+      
+    </Wrapper>
   );
 }
 
