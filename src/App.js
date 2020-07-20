@@ -19,8 +19,7 @@ function App() {
       <Route exact path='/'component={SplashPage}/>
       <Route path='/home'component={EventContainer}/>
       <Route path='/create-event'component={CreateEvent}/>
-      <Route path='/my-events'component={MyEvents}/>
-      
+      <Route path='/my-events'component={MyEvents}/> 
     </Wrapper>
   );
 }

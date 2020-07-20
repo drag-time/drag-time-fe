@@ -11,13 +11,29 @@ const Wrapper = styled.section`
 `;
 
 const Event = (props) => {
+
+  const performers = props.artists.map(artist => {
+    return (
+    <p>
+      {artist.name}
+    </p>
+    )
+  });
+
+  const tags = props.labels.map(label => {
+    return(<p>{label}</p>)
+  });
+
+
   return(
     <Wrapper>
-      <p>{props.name}</p>
-      <p>{props.date}</p>
-      <p>{props.time}</p>
-      <p>{props.location}</p>
-      <p>{props.tags}</p>
+      <p>Date of event: {props.date}</p>
+      <p>Start time: {props.start_time}</p>
+      <p>Location: {props.location.name}</p>
+      <p>Performers: </p>
+      {performers}
+      <p>Tags: </p>
+      {tags}
     </Wrapper>
   );
 }

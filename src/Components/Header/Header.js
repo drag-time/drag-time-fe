@@ -9,7 +9,6 @@ const Wrapper = styled.section`
   justify-content: space-between;
   align-items: center;
   border: 1px solid black; 
-  
 `
 const NavLinkStyled = styled(NavLink)`
   width: 20%;
@@ -27,7 +26,7 @@ const LinkContainer = styled.section`
 const Header = () => {
   return (
     <Wrapper>
-      <h1>DRAG TIME!!!</h1>
+      <h1>Drag Time</h1>
       <LinkContainer>
         <NavLinkStyled to='/home'>Home</NavLinkStyled>
         <NavLinkStyled to='/create-event'>Create Event</NavLinkStyled>
