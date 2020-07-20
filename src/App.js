@@ -1,25 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { GlobalStyle } from './GlobalStyle.js';
+import styled from 'styled-components';
+import { Route } from 'react-router-dom';
+import SplashPage from './Components/SplashPage/SplashPage.js';
+import EventContainer from './Containers/EventContainer/EventContainer.js'
+import CreateEvent from './Containers/CreateEvent/CreateEvent.js';
+import MyEvents from './Containers/MyEvents/MyEvents.js';
+const Wrapper = styled.section`
+  display: flex;
+  flex-direction: column;
 
+`
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper>
+      <GlobalStyle />
+      <Route exact path='/'component={SplashPage}/>
+      <Route path='/home'component={EventContainer}/>
+      <Route path='/create-event'component={CreateEvent}/>
+      <Route path='/my-events'component={MyEvents}/> 
+    </Wrapper>
   );
 }
 
