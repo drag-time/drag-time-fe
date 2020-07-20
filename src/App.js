@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { GlobalStyle } from './GlobalStyle.js';
 import styled from 'styled-components';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import SplashPage from './Components/SplashPage/SplashPage.js';
 import EventContainer from './Containers/EventContainer/EventContainer.js'
 import CreateEvent from './Containers/CreateEvent/CreateEvent.js';

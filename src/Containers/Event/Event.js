@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled.section`
@@ -12,16 +11,16 @@ const Wrapper = styled.section`
 
 const Event = (props) => {
 
-  const performers = props.artists.map(artist => {
+  const performers = props.artists.map((artist)=> {
     return (
-    <p>
+    <p key={artist.id}>
       {artist.name}
     </p>
     )
   });
 
-  const tags = props.labels.map(label => {
-    return(<p>{label}</p>)
+  const tags = props.labels.map((label, key) => {
+    return(<p key={key}>{label}</p>)
   });
 
 

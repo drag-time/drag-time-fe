@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
 import Header from '../../Components/Header/Header.js';
 import Event from '../Event/Event.js';
-// import events from './eventsList.js';
 import { connect } from 'react-redux';
 import { getEvents } from '../../Actions';
-// import SearchForm from '../SearchForm/SearchForm.js';
 
 const EventContainer = (props) => {
 
@@ -14,9 +10,9 @@ const EventContainer = (props) => {
     if (props.eventList.length === 0 ){
       return 'keep waiting'
     }
-    const eventsToDisplay = props.eventList.data.map(event => {
+    const eventsToDisplay = props.eventList.data.map((event)=> {
       return(
-        <Event {...event} />
+        <Event key={event.id} {...event} />
       )
     })
     return eventsToDisplay
@@ -24,7 +20,7 @@ const EventContainer = (props) => {
 
   useEffect(() => {
     props.getEvents();
-  },[])
+  })
 
   return(
     <section>

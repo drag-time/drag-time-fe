@@ -14,8 +14,6 @@ if (typeof window !== 'undefined') {
   delete window.__INITIAL_STATE__
 }
 
-const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-
 const store = createStore(rootReducer, initialState, composeWithDevTools(
   applyMiddleware(thunk),
 ));
