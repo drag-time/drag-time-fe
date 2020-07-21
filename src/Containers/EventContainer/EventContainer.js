@@ -22,6 +22,26 @@ const EventWrapper = styled.section`
   display: flex;
   flex-direction: column;
   width: 80%;
+  padding: 2%;
+  background-image: url('https://images.unsplash.com/photo-1593414220166-085caeae0382?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60');
+  background-size: cover;
+
+  h2 {
+    font-family: 'MuseoModerno', cursive;
+    font-weight: 100;
+    font-size: 2em;
+    color: white;
+    text-transform: uppercase;
+    background-color: black;
+    padding: .5% 1%;
+    opacity: 80%;
+    border-radius: 15px;
+
+    span {
+      font-weight: 500;
+      color: #2299A3;
+    }
+  }
 `
 
 const EventContainer = (props) => {
@@ -48,7 +68,7 @@ const EventContainer = (props) => {
       <BodyWrapper>
         <SearchForm />
         <EventWrapper>
-          <h2>Event Feed</h2>
+          <h2>Event<span>Feed</span></h2>
           {!!props.eventList && displayEvents()}
         </EventWrapper>
       </BodyWrapper>
