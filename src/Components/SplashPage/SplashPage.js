@@ -16,6 +16,7 @@ const Wrapper = styled.section`
     font-weight: 100;
     font-size: 6em;
     color: white;
+    text-transform: uppercase;
   }
   #time {
     font-weight: 500;
@@ -46,7 +47,7 @@ const SplashPage = () => {
   return (
     <Wrapper>
       <h1>
-        DRAG<span id="time">TIME</span>
+        Drag<span id="time">Time</span>
       </h1>
       <NavLinkStyled to='/home'>Enter</NavLinkStyled>
     </Wrapper>
