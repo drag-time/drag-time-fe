@@ -6,7 +6,7 @@ const Wrapper = styled.section`
   flex-direction: column;
   width: 20%;
   padding: 1%;
-  background-color: #A33273;
+  background-color: #57123A;
   height: 92vh;
 
   input {
@@ -16,6 +16,25 @@ const Wrapper = styled.section`
     border-radius: 10px;
     border: none;
     margin: 2%;
+  }
+
+  button {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.1em;
+    border: none;
+    background-color: #A39743;
+    color: white;
+    padding: 2% 5%;
+    border-radius: 15px;
+    margin: 5%;
+
+    :hover {
+      cursor: pointer;
+      outline-offset: 15px;
+      text-shadow: 1px 1px 2px #427388;
+      box-shadow: inset 0 0 40px #A39743, 0 0 40px #A39743;
+      outline-color: #A39743;
+    }
   }
 
   label {
@@ -81,7 +100,6 @@ const SearchForm = (props) => {
   return (
     <Wrapper>
       <input type="text" placeholder="Search by keyword..." />
-      <p>Tags to refine your search</p>
       <label>18+
         <input type="checkbox" />
         <span></span>
@@ -126,6 +144,7 @@ const SearchForm = (props) => {
         <input type="checkbox" />
         <span></span>
       </label>
+      <button>Submit Search</button>
     </Wrapper>
   )
 }
