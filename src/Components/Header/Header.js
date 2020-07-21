@@ -9,6 +9,7 @@ const Wrapper = styled.section`
   justify-content: space-between;
   align-items: center;
   background-color: #57123A;
+  border-bottom: 1px solid white;
 
   h1 {
     font-family: 'MuseoModerno', cursive;
