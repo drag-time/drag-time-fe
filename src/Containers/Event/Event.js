@@ -82,7 +82,7 @@ const Event = (props) => {
         <h4>Tags: {tags}</h4>
       </InfoWrapper>
       <ImgWrapper>
-        <img src={props.image} />
+        <img src={props.image} alt={props.title}/>
       </ImgWrapper>
     </Wrapper>
   );
