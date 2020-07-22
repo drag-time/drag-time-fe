@@ -60,7 +60,7 @@ const EventContainer = (props) => {
 
   useEffect(() => {
     props.getEvents();
-  })
+  }, {})
 
   return(
     <Wrapper>
