@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const Wrapper = styled.section`
   display: flex;
@@ -80,6 +81,7 @@ const Event = (props) => {
         <h4>Date of event: {props.date}</h4>
         <h4>Performers: {performers}</h4>
         <h4>Tags: {tags}</h4>
+        <NavLink to={`/event-details/${props.id}`}>See Info</NavLink>
       </InfoWrapper>
       <ImgWrapper>
         <img src={props.image} alt={props.title}/>
