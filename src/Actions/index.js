@@ -10,3 +10,13 @@ export function getEvents() {
       });
   }
 }
+
+export function findEvent(events, eventID) {
+  return dispatch => {
+    let foundEvent = events.filter(event => event.id == eventID)
+    return dispatch({
+      type: 'FIND_EVENT',
+      payload: foundEvent[0]
+    });
+  }
+}
