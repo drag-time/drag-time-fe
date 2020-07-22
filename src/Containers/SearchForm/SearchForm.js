@@ -8,6 +8,7 @@ const Wrapper = styled.section`
   padding: 1%;
   background-color: #57123A;
   height: 92vh;
+  border-right: 1px solid white;
 
   input {
     font-family: 'Raleway', sans-serif;
@@ -78,6 +79,7 @@ const Wrapper = styled.section`
       background-color: #2299A3;
       margin-left: auto;
       border-radius: 10px;
+      border: 1px solid white;
 
       :after {
         content: '';
