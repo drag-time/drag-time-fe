@@ -34,6 +34,7 @@ const NavLinkStyled = styled(NavLink)`
   color: white;
   border-radius: 15px;
   padding: 1% 5%;
+  width: 30%;
 
   :hover {
     cursor: pointer;
