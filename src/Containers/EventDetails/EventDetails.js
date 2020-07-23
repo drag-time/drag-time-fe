@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Header from '../../Components/Header/Header.js';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { findEvent } from '../../Actions';
+import { findEvent, addRSVP, addFavorite } from '../../Actions';
 
 const EventWrapper = styled.section`
   display: flex;
@@ -89,7 +89,7 @@ const ButtonWrapper = styled.section`
 
 const EventDetails = (props) => {
 
-  const {eventList, eventID, selectedEvent, findEvent} = props;
+  const {eventList, eventID, selectedEvent, findEvent, addRSVP, addFavorite} = props;
 
   const displayPerformers = () => {
     console.log(selectedEvent);
@@ -116,8 +116,9 @@ const EventDetails = (props) => {
         <InfoWrapper>
           <h2>{selectedEvent.title} | {selectedEvent.location.name}</h2>
           <ButtonWrapper>
-            <button>RSVP</button>
+            <button onClick={()=> addRSVP(eventID)}>RSVP</button>
             <button>Share</button>
+            <button onClick={()=> addFavorite(eventID)}>Add Favorite</button>
           </ButtonWrapper>
           <h4>{selectedEvent.description}</h4>
           <h3>Performers: {displayPerformers()}</h3>
@@ -155,7 +156,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    findEvent: (events, eventID) => dispatch(findEvent(events, eventID))
+    findEvent: (events, eventID) => dispatch(findEvent(events, eventID)),
+    addRSVP: (eventID) => dispatch(addRSVP(eventID)),
+    addFavorite: (eventID) => dispatch(addFavorite(eventID)),
   }
 }
 

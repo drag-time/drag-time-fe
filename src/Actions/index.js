@@ -20,3 +20,22 @@ export function findEvent(events, eventID) {
     });
   }
 }
+
+export function addRSVP(eventID) {
+  return dispatch => {
+    return dispatch({
+      type: 'ADD_RSVP',
+      payload: eventID
+    })
+  }
+}
+
+
+export function addFavorite(eventID) {
+  return dispatch => {
+    return dispatch({
+      type: 'ADD_FAVORITE',
+      payload: eventID
+    })
+  }
+}
