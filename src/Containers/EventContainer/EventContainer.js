@@ -46,11 +46,13 @@ const EventWrapper = styled.section`
 
 const EventContainer = (props) => {
 
+  const {eventList, getEvents} = props;
+
   const displayEvents = () => {
-    if (props.eventList.length === 0 ){
+    if (eventList.length === 0 ){
       return 'keep waiting'
     }
-    const eventsToDisplay = props.eventList.data.map((event)=> {
+    const eventsToDisplay = eventList.data.map((event)=> {
       return(
         <Event key={event.id} {...event} />
       )
@@ -59,8 +61,8 @@ const EventContainer = (props) => {
   }
 
   useEffect(() => {
-    props.getEvents();
-  }, {})
+    getEvents();
+  }, [getEvents])
 
   return(
     <Wrapper>
@@ -69,7 +71,7 @@ const EventContainer = (props) => {
         <SearchForm />
         <EventWrapper>
           <h2>Event<span>Feed</span></h2>
-          {!!props.eventList && displayEvents()}
+          {!!eventList && displayEvents()}
         </EventWrapper>
       </BodyWrapper>
     </Wrapper>
