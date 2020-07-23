@@ -13,12 +13,12 @@ const savedEvents = (state = initialState, action) => {
     case 'ADD_RSVP':
       return {
         ...state,
-        userRSVPs: state.userRSVPs.push(action.payload),
+        userRSVPs: [...state.userRSVPs, Number(action.payload)]
       }
     case 'ADD_FAVORITE':
       return {
         ...state, 
-        userFavorites: state.userFavorites.push(action.payload),
+        userFavorites: [...state.userFavorites, Number(action.payload)],
       }
     default: 
       return state

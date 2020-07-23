@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from '../../Components/Header/Header.js';
 import SearchForm from '../SearchForm/SearchForm.js';
+import Event from '../Event/Event.js';
 import { connect } from 'react-redux';
 
 
@@ -10,20 +11,19 @@ const MyEvents = (props) => {
   
   const { eventList, userRSVPs, userFavorites } = props;
 
-  const displayRSVPs = () => {
-    const rsvpsToDisplay = [];
-    userRSVPs.map((rsvpID)=> {
-      return rsvpsToDisplay.push(eventList.find(event => event.id === rsvpID))
+  const displaySavedEvent = (saveType) => {
+    const savedTypeToDisplay = [];
+    saveType.map((ID)=> {
+      return savedTypeToDisplay.push(eventList.find(event => event.id === ID))
     })
-    return rsvpsToDisplay
+    const savedTypeToRender = savedTypeToDisplay.map(event =>{
+      return(
+        <Event key={event.id} {...event}/>
+      )
+    })
+    return savedTypeToRender
   };
 
-  const displayFavorites = () => {
-    const favoritesToDisplay = userFavorites.map(event => {
-      return(<p>{event.title}</p>)
-    })
-    return favoritesToDisplay
-  };
 
   // useEffect(() => {
   //   getRSVPs();
@@ -37,12 +37,12 @@ const MyEvents = (props) => {
       <h2>My<span>Events</span></h2>
       <section>
         <h3>Events I'm Attending</h3>
-        {!!userRSVPs && displayRSVPs()}
+        {!!userRSVPs && displaySavedEvent(userRSVPs)}
 
       </section>
       <section>
         <h3>Favorited Events</h3>
-        {!!userFavorites && displayFavorites()}
+        {!!userFavorites && displaySavedEvent(userFavorites)}
       </section>
     </section>
   );
@@ -52,7 +52,7 @@ const mapStateToProps = state => {
   return {
     userFavorites: state.savedEvents.userFavorites,
     userRSVPs: state.savedEvents.userRSVPs,
-    eventList: state.EventContainerReducers.eventList.data,
+    eventList: state.EventContainerReducer.eventList.data,
   }
 }
 
