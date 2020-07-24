@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { addRSVP, addFavorite } from '../../Actions';
+
 
 const Wrapper = styled.section`
   display: flex;
@@ -9,11 +12,11 @@ const Wrapper = styled.section`
   width: 80%;
   padding: 2%;
   display: flex;
-  background-color: black;
-  opacity: 80%;
+  background-color: rgba(0,0,0,0.8);
   color: white;
   font-family: 'Raleway', sans-serif;
   border-radius: 10px;
+  margin-top: 10px;
 
   h3 {
     font-size: 2.3em;
@@ -72,6 +75,31 @@ const Event = (props) => {
     return(<p key={key}>{label}</p>)
   });
 
+  const checkIfRSVP = () => {
+    const checkRSVP = props.userRSVPs.filter(eventID => props.id === eventID);
+    if (!!checkRSVP.length){
+      return (
+        <button onClick={()=> props.addRSVP(props.id)}>Remove RSVP</button>
+      )
+    } else {
+      return (
+        <button onClick={()=> props.addRSVP(props.id)}>RSVP</button>
+      )
+    }
+  };
+
+  const checkIfFavorite = () => {
+    const checkFavorite = props.userFavorites.filter(eventID => props.id === eventID);
+    if (!!checkFavorite.length){
+      return (
+        <button onClick={()=> props.addFavorite(props.id)}>Remove Favorite</button>
+      )
+    } else {
+      return (
+        <button onClick={()=> props.addFavorite(props.id)}>Favorite</button>
+      )}
+  }
+
 
   return(
     <Wrapper>
@@ -81,6 +109,8 @@ const Event = (props) => {
         <h4>Date of event: {props.date}</h4>
         <h4>Performers: {performers}</h4>
         <h4>Tags: {tags}</h4>
+        {!!props.userRSVPs && checkIfRSVP()}
+        {!!props.userFavorites && checkIfFavorite()}
         <NavLink to={`/event-details/${props.id}`}>See Info</NavLink>
       </InfoWrapper>
       <ImgWrapper>
@@ -90,6 +120,22 @@ const Event = (props) => {
   );
 }
 
+const mapStateToProps = state => {
+  return {
+    userFavorites: state.savedEvents.userFavorites,
+    userRSVPs: state.savedEvents.userRSVPs,
+  }
+}
 
+const mapDispatchToProps = dispatch => {
+  return {
+    addRSVP: (eventID) => dispatch(addRSVP(eventID)),
+    addFavorite: (eventID) => dispatch(addFavorite(eventID)),
+  }
+}
 
-export default Event;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps)(Event)
+;
+

@@ -21,8 +21,8 @@ const InfoWrapper = styled.section`
   width: 50%;
   font-family: 'Raleway', sans-serif;
   margin: 2%;
-  background-color: black;
-  opacity: 85%;
+  border-radius: 15px;
+  background-color: rgba(0,0,0,0.85);
   padding: 2%;
 
   h2 {
@@ -92,7 +92,6 @@ const EventDetails = (props) => {
   const {eventList, eventID, selectedEvent, findEvent, addRSVP, addFavorite} = props;
 
   const displayPerformers = () => {
-    console.log(selectedEvent);
     const performers = selectedEvent.artists.map(artist => {
       if (selectedEvent.artists.indexOf(artist) === selectedEvent.artists.length -1) {
         return `& ${artist.name}`
