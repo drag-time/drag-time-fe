@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Header from '../../Components/Header/Header.js';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { findEvent } from '../../Actions';
+import { findEvent, addRSVP, addFavorite, removeFavorite, removeRSVP } from '../../Actions';
 
 const EventWrapper = styled.section`
   display: flex;
@@ -21,8 +21,8 @@ const InfoWrapper = styled.section`
   width: 50%;
   font-family: 'Raleway', sans-serif;
   margin: 2%;
-  background-color: black;
-  opacity: 85%;
+  border-radius: 15px;
+  background-color: rgba(0,0,0,0.85);
   padding: 2%;
 
   h2 {
@@ -89,10 +89,9 @@ const ButtonWrapper = styled.section`
 
 const EventDetails = (props) => {
 
-  const {eventList, eventID, selectedEvent, findEvent} = props;
+  const {eventList, eventID, selectedEvent, findEvent, addRSVP, addFavorite, removeFavorite, removeRSVP, userFavorites, userRSVPs} = props;
 
   const displayPerformers = () => {
-    console.log(selectedEvent);
     const performers = selectedEvent.artists.map(artist => {
       if (selectedEvent.artists.indexOf(artist) === selectedEvent.artists.length -1) {
         return `& ${artist.name}`
@@ -110,14 +109,40 @@ const EventDetails = (props) => {
     return labels;
   }
 
+  const checkIfRSVP = () => {
+    const checkRSVP = userRSVPs.filter(eventInRSVP => Number(eventID) === Number(eventInRSVP));
+    if (!!checkRSVP.length){
+      return (
+        <button onClick={()=> removeRSVP(eventID)}>Remove RSVP</button>
+      )
+    } else {
+      return (
+        <button onClick={()=> addRSVP(eventID)}>RSVP</button>
+      )
+    }
+  };
+
+  const checkIfFavorite = () => {
+    const checkFavorite = userFavorites.filter(eventInFavorite => Number(eventInFavorite) === Number(eventID));
+    if (!!checkFavorite.length){
+      return (
+        <button onClick={()=> removeFavorite(eventID)}>Remove Favorite</button>
+      )
+    } else {
+      return (
+        <button onClick={()=> addFavorite(eventID)}>Favorite</button>
+      )}
+  }
+
   const displayEventDetails = () => {
     return (
       <EventWrapper>
         <InfoWrapper>
           <h2>{selectedEvent.title} | {selectedEvent.location.name}</h2>
           <ButtonWrapper>
-            <button>RSVP</button>
+            {!!userRSVPs && checkIfRSVP()}
             <button>Share</button>
+            {!!userFavorites && checkIfFavorite()}
           </ButtonWrapper>
           <h4>{selectedEvent.description}</h4>
           <h3>Performers: {displayPerformers()}</h3>
@@ -149,13 +174,19 @@ const EventDetails = (props) => {
 const mapStateToProps = state => {
   return {
     eventList: state.EventContainerReducer.eventList.data,
-    selectedEvent: state.EventDetailsReducer.selectedEvent
+    selectedEvent: state.EventDetailsReducer.selectedEvent,
+    userFavorites: state.savedEvents.userFavorites,
+    userRSVPs: state.savedEvents.userRSVPs,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    findEvent: (events, eventID) => dispatch(findEvent(events, eventID))
+    findEvent: (events, eventID) => dispatch(findEvent(events, eventID)),
+    addRSVP: (eventID) => dispatch(addRSVP(eventID)),
+    addFavorite: (eventID) => dispatch(addFavorite(eventID)),
+    removeFavorite: (eventID) => dispatch(removeFavorite(eventID)),
+    removeRSVP: (eventID) => dispatch(removeRSVP(eventID)),
   }
 }
 

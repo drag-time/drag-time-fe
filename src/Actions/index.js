@@ -20,3 +20,39 @@ export function findEvent(events, eventID) {
     });
   }
 }
+
+export function addRSVP(eventID) {
+  return dispatch => {
+    return dispatch({
+      type: 'ADD_RSVP',
+      payload: Number(eventID)
+    })
+  }
+}
+
+export function removeRSVP(eventID) {
+  return dispatch => {
+    return dispatch({
+      type: 'REMOVE_RSVP',
+      payload: Number(eventID)
+    })
+  }
+}
+
+export function addFavorite(eventID) {
+  return dispatch => {
+    return dispatch({
+      type: 'ADD_FAVORITE',
+      payload: Number(eventID)
+    })
+  }
+}
+
+export function removeFavorite(eventID) {
+  return dispatch => {
+    return dispatch({
+      type: 'REMOVE_FAVORITE',
+      payload: Number(eventID)
+    })
+  }
+}

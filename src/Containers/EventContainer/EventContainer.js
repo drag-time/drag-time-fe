@@ -32,9 +32,8 @@ const EventWrapper = styled.section`
     font-size: 2em;
     color: white;
     text-transform: uppercase;
-    background-color: black;
+    background-color: rgba(0,0,0,0.8);
     padding: .5% 1%;
-    opacity: 80%;
     border-radius: 15px;
 
     span {

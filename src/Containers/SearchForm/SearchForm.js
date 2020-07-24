@@ -7,7 +7,7 @@ const Wrapper = styled.section`
   width: 20%;
   padding: 1%;
   background-color: #57123A;
-  height: 92vh;
+  height: 90%;
   border-right: 1px solid white;
 
   input {
