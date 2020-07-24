@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addRSVP, addFavorite } from '../../Actions';
+import { addRSVP, addFavorite, removeRSVP, removeFavorite } from '../../Actions';
 
 
 const Wrapper = styled.section`
@@ -79,7 +79,7 @@ const Event = (props) => {
     const checkRSVP = props.userRSVPs.filter(eventID => props.id === eventID);
     if (!!checkRSVP.length){
       return (
-        <button onClick={()=> props.addRSVP(props.id)}>Remove RSVP</button>
+        <button onClick={()=> props.removeRSVP(props.id)}>Remove RSVP</button>
       )
     } else {
       return (
@@ -92,7 +92,7 @@ const Event = (props) => {
     const checkFavorite = props.userFavorites.filter(eventID => props.id === eventID);
     if (!!checkFavorite.length){
       return (
-        <button onClick={()=> props.addFavorite(props.id)}>Remove Favorite</button>
+        <button onClick={()=> props.removeFavorite(props.id)}>Remove Favorite</button>
       )
     } else {
       return (
@@ -131,6 +131,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addRSVP: (eventID) => dispatch(addRSVP(eventID)),
     addFavorite: (eventID) => dispatch(addFavorite(eventID)),
+    removeRSVP: (eventID) => dispatch(removeRSVP(eventID)),
+    removeFavorite: (eventID) => dispatch(removeFavorite(eventID)),
   }
 }
 
