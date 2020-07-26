@@ -10,22 +10,25 @@ const Wrapper = styled.section`
   flex-direction: column;
   width: 100%;
   overflow: scroll;
-  height: 90%;
+  height: 100%;
 `
 
 const BodyWrapper = styled.section`
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 90%;
 `
 
 const EventWrapper = styled.section`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   padding: 2%;
   background-image: url('https://images.unsplash.com/photo-1593414220166-085caeae0382?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60');
   background-size: cover;
+  overflow: scroll;
+  height: 100%;
 
 
   h2 {
@@ -70,7 +73,7 @@ const EventWrapper = styled.section`
 
 
 const MyEvents = (props) => {
-  
+
   const { eventList, userRSVPs, userFavorites } = props;
 
   const displaySavedEvent = (saveType) => {
