@@ -17,7 +17,7 @@ const savedEvents = (state = initialState, action) => {
       }
     case 'ADD_FAVORITE':
       return {
-        ...state, 
+        ...state,
         userFavorites: [...state.userFavorites,action.payload],
       }
     case 'REMOVE_RSVP':
@@ -30,7 +30,12 @@ const savedEvents = (state = initialState, action) => {
         ...state,
         userFavorites: state.userFavorites.filter(event => event !== action.payload)
       }
-    default: 
+    case 'GET_LOCATIONS':
+      return {
+        ...state,
+        locationList: action.payload
+      }
+    default:
       return state
   }
 
