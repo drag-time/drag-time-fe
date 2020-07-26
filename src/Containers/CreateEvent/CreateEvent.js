@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../../Components/Header/Header.js';
 import { connect } from 'react-redux';
-import { getEvents } from '../../Actions';
+import { getEvents, getLocations } from '../../Actions';
 
 const Wrapper = styled.section`
   display: flex;
@@ -188,7 +188,8 @@ const RowThreeWrapper = styled.section`
 
 const CreateEvent = (props) => {
 
-  const {eventList, getEvents} = props;
+  const {eventList, locationList, getEvents, getLocations} = props;
+  const [location, setLocation] = useState(null);
 
   const displayExistingLocations = () => {
     const renderedOptions = eventList.data.reduce((acc, eventOption) => {
@@ -203,16 +204,23 @@ const CreateEvent = (props) => {
       return acc;
     }, []);
     return (
-      <select>
-        <option value="">Exisiting Location</option>
+      <select onChange={autoFillLocations}>
+        <option value="">Choose Exising Location</option>
         {renderedOptions}
       </select>
     )
   }
 
+  const autoFillLocations = (e) => {
+    let locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
+    let chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
+    return setLocation(chosenLocation);
+  }
+
   useEffect(() => {
     getEvents();
-  }, [getEvents])
+    getLocations();
+  }, [getEvents, getLocations])
 
   return(
     <Wrapper>
@@ -241,11 +249,21 @@ const CreateEvent = (props) => {
         </RowOneWrapper>
         <RowTwoWrapper>
           {!!eventList && displayExistingLocations()}
-          <input type="text" placeholder="New Location Title" />
-          <input type="text" placeholder="Street Address" />
-          <input type="text" placeholder="City" />
-          <input type="text" placeholder="State" />
-          <input type="number" placeholder="Zip" />
+          {!!location ? <input type="text" value={location.name}></input> :
+            <input type="text" placeholder="New Location Title"></input>
+          }
+          {!!location ? <input type="text" value={location.address}></input> :
+            <input type="text" placeholder="Street Address"></input>
+          }
+          {!!location ? <input type="text" value={location.city}></input> :
+            <input type="text" placeholder="City"></input>
+          }
+          {!!location ? <input type="text" value={location.state}></input> :
+            <input type="text" placeholder="State"></input>
+          }
+          {!!location ? <input type="text" value={location.zip}></input> :
+            <input type="text" placeholder="Zip"></input>
+          }
         </RowTwoWrapper>
         <RowThreeWrapper>
           <section>
@@ -292,13 +310,15 @@ const CreateEvent = (props) => {
 
 const mapStateToProps = state => {
   return {
-    eventList: state.EventContainerReducer.eventList
+    eventList: state.EventContainerReducer.eventList,
+    locationList: state.savedEvents.locationList
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getEvents: () => dispatch(getEvents())
+    getEvents: () => dispatch(getEvents()),
+    getLocations: () => dispatch(getLocations())
   }
 }
 
