@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Header from '../../Components/Header/Header.js';
+import { connect } from 'react-redux';
+import { getEvents } from '../../Actions';
 
 const Wrapper = styled.section`
   display: flex;
@@ -68,6 +70,12 @@ const RowOneWrapper = styled.section`
     flex-direction: column;
     justify-content: space-around;
     width: 30%;
+
+    #uploadImage {
+      color: white;
+      align-self: center;
+      width: 100%;
+    }
 
     img {
       max-width: 100%;
@@ -158,11 +166,54 @@ const RowThreeWrapper = styled.section`
   }
 
   button {
-    height: 15%;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.1em;
+    border: none;
+    background-color: #A39743;
+    color: white;
+    height: 20%;
+    width: 25%;
+    border-radius: 15px;
+    margin: auto 0 2% auto;
+
+    :hover {
+      cursor: pointer;
+      outline-offset: 15px;
+      text-shadow: 1px 1px 2px #427388;
+      box-shadow: inset 0 0 20px #A39743, 0 0 20px #A39743;
+      outline-color: #A39743;
+    }
   }
 `
 
 const CreateEvent = (props) => {
+
+  const {eventList, getEvents} = props;
+
+  const displayExistingLocations = () => {
+    const renderedOptions = eventList.data.reduce((acc, eventOption) => {
+      if (!acc.length) {
+        acc.push(<option id={eventOption.location.id} key={Number(eventOption.location.id)} value={eventOption.location.name} name={eventOption.location.name}>{eventOption.location.name}</option>)
+      } else {
+        let foundEvent = acc.find(matchingEvent => matchingEvent.props.id === eventOption.location.id)
+        if (!foundEvent) {
+          acc.push(<option id={eventOption.location.id} key={Number(eventOption.location.id)} value={eventOption.location.name} name={eventOption.location.name}>{eventOption.location.name}</option>)
+        }
+      }
+      return acc;
+    }, []);
+    return (
+      <select>
+        <option value="">Exisiting Location</option>
+        {renderedOptions}
+      </select>
+    )
+  }
+
+  useEffect(() => {
+    getEvents();
+  }, [getEvents])
+
   return(
     <Wrapper>
       <Header />
@@ -173,11 +224,11 @@ const CreateEvent = (props) => {
             <input type="text" placeholder="Name of Event" />
             <input type="date" />
             <section className="time-wrapper">
-              <label for="startTime">Start Time</label>
+              <label htmlFor="startTime">Start Time</label>
               <input id="startTime" type="time" />
             </section>
             <section className="time-wrapper">
-              <label for="endTime">End Time</label>
+              <label htmlFor="endTime">End Time</label>
               <input id="endTime" type="time" />
             </section>
           </section>
@@ -185,17 +236,11 @@ const CreateEvent = (props) => {
             <textarea rows="15" placeholder="Event Description..."></textarea>
           </section>
           <section>
-            <img src="https://images.unsplash.com/photo-1553242072-345b34e7b55b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"/>
+            <input id="uploadImage" name="uploadImage" type="file" placeholder="Choose an Image" accept="image/*" />
           </section>
         </RowOneWrapper>
         <RowTwoWrapper>
-          <select id="existingLocations">
-            <option value="">Existing Locations</option>
-            <option value="location1">Location 1</option>
-            <option value="location2">Location 2</option>
-            <option value="location3">Location 3</option>
-            <option value="location4">Location 4</option>
-          </select>
+          {!!eventList && displayExistingLocations()}
           <input type="text" placeholder="New Location Title" />
           <input type="text" placeholder="Street Address" />
           <input type="text" placeholder="City" />
@@ -204,37 +249,37 @@ const CreateEvent = (props) => {
         </RowTwoWrapper>
         <RowThreeWrapper>
           <section>
-            <label for="eighteenPlus">18+
+            <label htmlFor="eighteenPlus">18+
               <input id="eighteenPlus" type="checkbox" />
             </label>
-            <label for="twentyOnePlus">21+
+            <label htmlFor="twentyOnePlus">21+
               <input id="twentyOnePlus" type="checkbox" />
             </label>
-            <label for="coverCharge">Cover Charge
+            <label htmlFor="coverCharge">Cover Charge
               <input id="coverCharge" type="checkbox" />
             </label>
-            <label for="dragKing">Drag King
+            <label htmlFor="dragKing">Drag King
               <input id="dragKing" type="checkbox" />
             </label>
-            <label for="dragQueen">Drag Queen
+            <label htmlFor="dragQueen">Drag Queen
               <input id="dragQueen" type="checkbox" />
             </label>
-            <label for="ballroom">Ballroom
+            <label htmlFor="ballroom">Ballroom
               <input id="ballroom" type="checkbox" />
             </label>
-            <label for="pageant">Pageant
+            <label htmlFor="pageant">Pageant
               <input id="pageant" type="checkbox" />
             </label>
-            <label for="trivia">Trivia
+            <label htmlFor="trivia">Trivia
               <input id="trivia" type="checkbox" />
             </label>
-            <label for="musical">Musical
+            <label htmlFor="musical">Musical
               <input id="musical" type="checkbox" />
             </label>
-            <label for="tribute">Tribute
+            <label htmlFor="tribute">Tribute
               <input id="tribute" type="checkbox" />
             </label>
-            <label for="horror">Horror
+            <label htmlFor="horror">Horror
               <input id="horror" type="checkbox" />
             </label>
           </section>
@@ -245,4 +290,18 @@ const CreateEvent = (props) => {
   );
 }
 
-export default CreateEvent;
+const mapStateToProps = state => {
+  return {
+    eventList: state.EventContainerReducer.eventList
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getEvents: () => dispatch(getEvents())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps)(CreateEvent)
