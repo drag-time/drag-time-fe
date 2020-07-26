@@ -11,6 +11,19 @@ export function getEvents() {
   }
 }
 
+export function getLocations() {
+  return dispatch => {
+    return fetch('http://localhost:4000/api/locations')
+      .then((response) => response.json())
+      .then(locations => {
+        return dispatch({
+          type: 'GET_LOCATIONS',
+          payload: locations
+        })
+      })
+  }
+}
+
 export function findEvent(events, eventID) {
   return dispatch => {
     let foundEvent = events.filter(event => event.id === Number(eventID))
