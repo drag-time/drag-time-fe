@@ -49,14 +49,6 @@ const Wrapper = styled.section`
     border-bottom: 1px solid white;
     margin: 2%;
 
-    /* :hover input ~ span {
-      background-color: #A39743;
-      outline-offset: 15px;
-      text-shadow: 1px 1px 2px #427388;
-      box-shadow: inset 0 0 40px #A39743, 0 0 40px #A39743;
-      outline-color: #A39743;
-    } */
-
     input {
       opacity: 0;
       cursor: pointer;
@@ -95,6 +87,10 @@ const Wrapper = styled.section`
     }
   }
 `
+
+// const SearchForm = (props) => {
+//
+// }
 
 class SearchForm extends Component {
   constructor(props) {
