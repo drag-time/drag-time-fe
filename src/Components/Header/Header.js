@@ -7,7 +7,6 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  position: sticky;
   align-items: center;
   background-color: #57123A;
   border-bottom: 1px solid white;
