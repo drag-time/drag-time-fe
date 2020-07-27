@@ -1,6 +1,6 @@
 export function getEvents() {
   return dispatch => {
-    return fetch('http://localhost:4000/api/events')
+    return fetch(process.env.REACT_APP_API_URL+'/api/events')
       .then((response) => response.json())
       .then(events => {
         return dispatch({
@@ -13,7 +13,7 @@ export function getEvents() {
 
 export function getLocations() {
   return dispatch => {
-    return fetch('http://localhost:4000/api/locations')
+    return fetch(process.env.REACT_APP_API_URL+'/api/locations')
       .then((response) => response.json())
       .then(locations => {
         return dispatch({
@@ -70,6 +70,11 @@ export function removeFavorite(eventID) {
   }
 }
 
-export function publishEvent() {
-  
+export function publishEvent(eventObject) {
+  return dispatch => {
+    return dispatch({
+      type: 'PUBLISH_EVENT',
+      payload: eventObject
+    })
+  }
 }
