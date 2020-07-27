@@ -232,6 +232,7 @@ const CreateEvent = (props) => {
     return setLocation(chosenLocation);
   }
 
+  // refactor to a switch statement
   const updateFormState = (e) => {
     if (e.target.id === 'eventName') {
       setEventName(e.target.value);

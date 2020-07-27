@@ -92,6 +92,9 @@ const Wrapper = styled.section`
 //
 // }
 
+// switch back to functional component
+// connect to store, update form state
+
 class SearchForm extends Component {
   constructor(props) {
     super(props);

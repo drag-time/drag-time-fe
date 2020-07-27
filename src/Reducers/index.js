@@ -9,6 +9,9 @@ const initialState = {
   locationList: []
 };
 
+// move all reducers into here, but have different switches
+// for groups of reducers 
+
 const savedEvents = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_RSVP':
