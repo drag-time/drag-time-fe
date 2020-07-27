@@ -49,7 +49,7 @@ const EventWrapper = styled.section`
   }
 
 
-  .my-event-title, 
+  .my-event-title,
   .missing-events {
     display: flex;
     flex-direction: row;
@@ -117,7 +117,7 @@ const mapStateToProps = state => {
   return {
     userFavorites: state.savedEvents.userFavorites,
     userRSVPs: state.savedEvents.userRSVPs,
-    eventList: state.EventContainerReducer.eventList.data,
+    eventList: state.displayEvents.eventList.data,
   }
 }
 
