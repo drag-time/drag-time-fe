@@ -83,7 +83,7 @@ const EventContainer = (props) => {
 
 const mapStateToProps = state => {
   return {
-    eventList: state.EventContainerReducer.eventList,
+    eventList: state.displayEvents.eventList,
   }
 }
 
