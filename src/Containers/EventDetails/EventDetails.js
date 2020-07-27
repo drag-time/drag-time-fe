@@ -68,7 +68,7 @@ const ButtonWrapper = styled.section`
 
   .small-text {
     font-size: 1.1em;
-  } 
+  }
 
   button {
     font-family: 'Raleway', sans-serif;
@@ -177,8 +177,8 @@ const EventDetails = (props) => {
 
 const mapStateToProps = state => {
   return {
-    eventList: state.EventContainerReducer.eventList.data,
-    selectedEvent: state.EventDetailsReducer.selectedEvent,
+    eventList: state.displayEvents.eventList.data,
+    selectedEvent: state.displayEvents.selectedEvent,
     userFavorites: state.savedEvents.userFavorites,
     userRSVPs: state.savedEvents.userRSVPs,
   }
