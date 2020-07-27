@@ -1,18 +1,27 @@
 import { combineReducers } from 'redux'
-import { EventContainerReducer } from './EventContainerReducer';
-import { EventDetailsReducer} from './EventDetailsReducers';
+
 //Combines reducers
 
-const initialState = {
+const savedEventInitialState = {
   userRSVPs: [],
   userFavorites: [],
   locationList: []
 };
 
-// move all reducers into here, but have different switches
-// for groups of reducers 
+const displayEventInitialState = {
+  eventList: [],
+  selectedEvent: {}
+}
 
-const savedEvents = (state = initialState, action) => {
+const createEventInitialState = {
+  locationList: [],
+  eventList: []
+}
+
+// move all reducers into here, but have different switches
+// for groups of reducers
+
+const savedEvents = (state = savedEventInitialState, action) => {
   switch (action.type) {
     case 'ADD_RSVP':
       return {
@@ -42,10 +51,44 @@ const savedEvents = (state = initialState, action) => {
     default:
       return state
   }
-
 }
+
+const displayEvents = (state = displayEventInitialState, action) => {
+  switch (action.type) {
+    case 'FIND_EVENT':
+      return {
+        ...state,
+        selectedEvent: action.payload,
+      }
+    case 'GET_EVENTS':
+      return {
+        ...state,
+        eventList: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+const createEvent = (state = createEventInitialState, action) => {
+  switch (action.type) {
+    case 'GET_LOCATIONS':
+      return {
+        ...state,
+        locationList: action.payload
+      }
+    case 'PUBLISH_EVENT':
+      return {
+        ...state,
+      }
+    default:
+      return state
+  }
+}
+
+
 export const rootReducer = combineReducers({
-  EventContainerReducer,
+  displayEvents,
   savedEvents,
-  EventDetailsReducer
+  createEvent
 });
