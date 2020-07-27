@@ -69,3 +69,7 @@ export function removeFavorite(eventID) {
     })
   }
 }
+
+export function publishEvent() {
+  
+}
