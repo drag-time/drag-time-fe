@@ -6,6 +6,7 @@ import { EventDetailsReducer} from './EventDetailsReducers';
 const initialState = {
   userRSVPs: [],
   userFavorites: [],
+  locationList: []
 };
 
 const savedEvents = (state = initialState, action) => {
