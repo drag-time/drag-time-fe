@@ -22,6 +22,13 @@ const FormWrapper = styled.section`
   height: 100%;
   margin-bottom: 2%;
 
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+
   input {
     font-family: 'Raleway', sans-serif;
     padding: 1.2%;
@@ -189,7 +196,15 @@ const RowThreeWrapper = styled.section`
 const CreateEvent = (props) => {
 
   const {eventList, locationList, getEvents, getLocations} = props;
+
   const [location, setLocation] = useState(null);
+  const [eventName, setEventName] = useState('');
+  const [eventDate, setEventDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
+  const [eventImage, setEventImage] = useState('');
+  const [labels, setLabels] = useState([]);
 
   const displayExistingLocations = () => {
     const renderedOptions = eventList.data.reduce((acc, eventOption) => {
@@ -217,6 +232,22 @@ const CreateEvent = (props) => {
     return setLocation(chosenLocation);
   }
 
+  const updateFormState = (e) => {
+    if (e.target.id === 'eventName') {
+      setEventName(e.target.value);
+    } else if (e.target.id === 'eventDate') {
+      setEventDate(e.target.value);
+    } else if (e.target.id === 'startTime') {
+      setStartTime(e.target.value);
+    } else if (e.target.id === 'endTime') {
+      setEndTime(e.target.value);
+    } else if (e.target.id === 'eventDescription') {
+      setEventDescription(e.target.value);
+    } else if (e.target.id === 'eventImage') {
+      setEventImage(e.target.value);
+    }
+  }
+
   useEffect(() => {
     getEvents();
     getLocations();
@@ -226,83 +257,85 @@ const CreateEvent = (props) => {
     <Wrapper>
       <Header />
       <FormWrapper>
-        <h2>Create<span>Event</span></h2>
-        <RowOneWrapper>
-          <section>
-            <input type="text" placeholder="Name of Event" />
-            <input type="date" />
-            <section className="time-wrapper">
-              <label htmlFor="startTime">Start Time</label>
-              <input id="startTime" type="time" />
+        <form>
+          <h2>Create<span>Event</span></h2>
+          <RowOneWrapper>
+            <section>
+              <input required onChange={(e) => updateFormState(e)} id="eventName" type="text" placeholder="Name of Event" />
+              <input required onChange={(e) => updateFormState(e)} id="eventDate" type="date" />
+              <section className="time-wrapper">
+                <label htmlFor="startTime">Start Time</label>
+                <input required onChange={(e) => updateFormState(e)} id="startTime" type="time" />
+              </section>
+              <section className="time-wrapper">
+                <label htmlFor="endTime">End Time</label>
+                <input required onChange={(e) => updateFormState(e)} id="endTime" type="time" />
+              </section>
             </section>
-            <section className="time-wrapper">
-              <label htmlFor="endTime">End Time</label>
-              <input id="endTime" type="time" />
+            <section>
+              <textarea required onChange={(e) => updateFormState(e)} id="eventDescription" rows="15" placeholder="Event Description..."></textarea>
             </section>
-          </section>
-          <section>
-            <textarea rows="15" placeholder="Event Description..."></textarea>
-          </section>
-          <section>
-            <input id="uploadImage" name="uploadImage" type="file" placeholder="Choose an Image" accept="image/*" />
-          </section>
-        </RowOneWrapper>
-        <RowTwoWrapper>
-          {!!eventList && displayExistingLocations()}
-          {!!location ? <input type="text" value={location.name}></input> :
-            <input type="text" placeholder="New Location Title"></input>
-          }
-          {!!location ? <input type="text" value={location.address}></input> :
-            <input type="text" placeholder="Street Address"></input>
-          }
-          {!!location ? <input type="text" value={location.city}></input> :
-            <input type="text" placeholder="City"></input>
-          }
-          {!!location ? <input type="text" value={location.state}></input> :
-            <input type="text" placeholder="State"></input>
-          }
-          {!!location ? <input type="text" value={location.zip}></input> :
-            <input type="text" placeholder="Zip"></input>
-          }
-        </RowTwoWrapper>
-        <RowThreeWrapper>
-          <section>
-            <label htmlFor="eighteenPlus">18+
-              <input id="eighteenPlus" type="checkbox" />
-            </label>
-            <label htmlFor="twentyOnePlus">21+
-              <input id="twentyOnePlus" type="checkbox" />
-            </label>
-            <label htmlFor="coverCharge">Cover Charge
-              <input id="coverCharge" type="checkbox" />
-            </label>
-            <label htmlFor="dragKing">Drag King
-              <input id="dragKing" type="checkbox" />
-            </label>
-            <label htmlFor="dragQueen">Drag Queen
-              <input id="dragQueen" type="checkbox" />
-            </label>
-            <label htmlFor="ballroom">Ballroom
-              <input id="ballroom" type="checkbox" />
-            </label>
-            <label htmlFor="pageant">Pageant
-              <input id="pageant" type="checkbox" />
-            </label>
-            <label htmlFor="trivia">Trivia
-              <input id="trivia" type="checkbox" />
-            </label>
-            <label htmlFor="musical">Musical
-              <input id="musical" type="checkbox" />
-            </label>
-            <label htmlFor="tribute">Tribute
-              <input id="tribute" type="checkbox" />
-            </label>
-            <label htmlFor="horror">Horror
-              <input id="horror" type="checkbox" />
-            </label>
-          </section>
-          <button>Publish Event</button>
-        </RowThreeWrapper>
+            <section>
+              <input required onChange={(e) => updateFormState(e)} id="eventImage" name="uploadImage" type="file" placeholder="Choose an Image" accept="image/*" />
+            </section>
+          </RowOneWrapper>
+          <RowTwoWrapper>
+            {!!eventList && displayExistingLocations()}
+            {!!location ? <input type="text" value={location.name}></input> :
+              <input required type="text" placeholder="New Location Title"></input>
+            }
+            {!!location ? <input type="text" value={location.address}></input> :
+              <input required type="text" placeholder="Street Address"></input>
+            }
+            {!!location ? <input type="text" value={location.city}></input> :
+              <input required type="text" placeholder="City"></input>
+            }
+            {!!location ? <input type="text" value={location.state}></input> :
+              <input required type="text" placeholder="State"></input>
+            }
+            {!!location ? <input type="text" value={location.zip}></input> :
+              <input required type="text" placeholder="Zip"></input>
+            }
+          </RowTwoWrapper>
+          <RowThreeWrapper>
+            <section>
+              <label htmlFor="eighteenPlus">18+
+                <input id="eighteenPlus" type="checkbox" />
+              </label>
+              <label htmlFor="twentyOnePlus">21+
+                <input id="twentyOnePlus" type="checkbox" />
+              </label>
+              <label htmlFor="coverCharge">Cover Charge
+                <input id="coverCharge" type="checkbox" />
+              </label>
+              <label htmlFor="dragKing">Drag King
+                <input id="dragKing" type="checkbox" />
+              </label>
+              <label htmlFor="dragQueen">Drag Queen
+                <input id="dragQueen" type="checkbox" />
+              </label>
+              <label htmlFor="ballroom">Ballroom
+                <input id="ballroom" type="checkbox" />
+              </label>
+              <label htmlFor="pageant">Pageant
+                <input id="pageant" type="checkbox" />
+              </label>
+              <label htmlFor="trivia">Trivia
+                <input id="trivia" type="checkbox" />
+              </label>
+              <label htmlFor="musical">Musical
+                <input id="musical" type="checkbox" />
+              </label>
+              <label htmlFor="tribute">Tribute
+                <input id="tribute" type="checkbox" />
+              </label>
+              <label htmlFor="horror">Horror
+                <input id="horror" type="checkbox" />
+              </label>
+            </section>
+            <button>Publish Event</button>
+          </RowThreeWrapper>
+        </form>
       </FormWrapper>
     </Wrapper>
   );
