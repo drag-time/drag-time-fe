@@ -72,9 +72,21 @@ export function removeFavorite(eventID) {
 
 export function publishEvent(eventObject) {
   return dispatch => {
-    return dispatch({
-      type: 'PUBLISH_EVENT',
-      payload: eventObject
+    return fetch(process.env.REACT_APP_API_URL+'/api/events', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(eventObject)
+    })
+    .then(response => response.json())
+    .then(response => console.log(response))
+    .then(response => {
+      return dispatch({
+        type: 'PUBLISH_EVENT',
+        payload: response
+      })
     })
   }
 }
