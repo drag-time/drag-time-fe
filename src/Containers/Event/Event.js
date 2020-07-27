@@ -60,6 +60,59 @@ const ImgWrapper = styled.section`
     margin: auto;
   }
 `
+const NavLinkStyled = styled(NavLink)`
+  text-decoration: none;
+  font-size: 2em;
+  border: none;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2em;
+  border: none;
+  background-color: #A39743;
+  color: white;
+  padding: 1% 2%;
+  border-radius: 15px;
+  margin: 2%;
+  width: 30%;
+  text-align: center;
+
+  :hover {
+    cursor: pointer;
+    outline-offset: 15px;
+    text-shadow: 1px 1px 2px #427388;
+    box-shadow: inset 0 0 20px #A39743, 0 0 20px #A39743;
+    outline-color: #A39743;
+  }
+`
+
+const ButtonWrapper = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  
+  .small-text {
+    font-size: .8em;
+  } 
+
+  button {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.2em;
+    border: none;
+    background-color: #A39743;
+    color: white;
+    padding: 1% 2%;
+    border-radius: 15px;
+    margin: 2%;
+    width: 30%;
+
+    :hover {
+      cursor: pointer;
+      outline-offset: 15px;
+      text-shadow: 1px 1px 2px #427388;
+      box-shadow: inset 0 0 20px #A39743, 0 0 20px #A39743;
+      outline-color: #A39743;
+    }
+  }
+`
 
 const Event = (props) => {
 
@@ -79,7 +132,7 @@ const Event = (props) => {
     const checkRSVP = props.userRSVPs.filter(eventID => props.id === eventID);
     if (!!checkRSVP.length){
       return (
-        <button onClick={()=> props.removeRSVP(props.id)}>Remove RSVP</button>
+        <button onClick={()=> props.removeRSVP(props.id)} className='small-text'>Remove RSVP</button>
       )
     } else {
       return (
@@ -92,7 +145,7 @@ const Event = (props) => {
     const checkFavorite = props.userFavorites.filter(eventID => props.id === eventID);
     if (!!checkFavorite.length){
       return (
-        <button onClick={()=> props.removeFavorite(props.id)}>Remove Favorite</button>
+        <button onClick={()=> props.removeFavorite(props.id)} className='small-text'>Remove Favorite</button>
       )
     } else {
       return (
@@ -109,9 +162,11 @@ const Event = (props) => {
         <h4>Date of event: {props.date}</h4>
         <h4>Performers: {performers}</h4>
         <h4>Tags: {tags}</h4>
-        {!!props.userRSVPs && checkIfRSVP()}
-        {!!props.userFavorites && checkIfFavorite()}
-        <NavLink to={`/event-details/${props.id}`}>See Info</NavLink>
+        <ButtonWrapper>
+          {!!props.userRSVPs && checkIfRSVP()}
+          {!!props.userFavorites && checkIfFavorite()}
+          <NavLinkStyled to={`/event-details/${props.id}`}>See Info</NavLinkStyled>
+        </ButtonWrapper>
       </InfoWrapper>
       <ImgWrapper>
         <img src={props.image} alt={props.title}/>

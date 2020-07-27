@@ -10,12 +10,14 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-height: 100%;
 `
 
 const BodyWrapper = styled.section`
   display: flex;
   flex-direction: row;
   width: 100%;
+  max-height: 90%;
 `
 
 const EventWrapper = styled.section`
@@ -25,6 +27,9 @@ const EventWrapper = styled.section`
   padding: 2%;
   background-image: url('https://images.unsplash.com/photo-1593414220166-085caeae0382?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60');
   background-size: cover;
+  background-position: center;
+  overflow: scroll;
+
 
   h2 {
     font-family: 'MuseoModerno', cursive;

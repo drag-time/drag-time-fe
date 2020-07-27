@@ -46,7 +46,8 @@ const EventWrapper = styled.section`
   }
 
 
-  .my-event-title {
+  .my-event-title, 
+  .missing-events {
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -94,12 +95,14 @@ const MyEvents = (props) => {
         <EventWrapper>
           <section>
             <h2>My<span>Events</span></h2>
-            <h3 className="my-event-title">Events I'm Attending</h3>
+            {!!userRSVPs.length && <h3 className="my-event-title">Events I'm Attending</h3>}
             {!!userRSVPs && displaySavedEvent(userRSVPs)}
+            {!userRSVPs.length && <h3 className="missing-events">RSVP to some drag events!</h3>}
           </section>
           <section>
-            <h3 className="my-event-title">Favorited Events</h3>
+            {!!userFavorites.length && <h3 className="my-event-title">Favorited Events</h3>}
             {!!userFavorites && displaySavedEvent(userFavorites)}
+            {!userFavorites.length && <h3 className="missing-events">Favorite some drag events!</h3>}
           </section>
         </EventWrapper>
       </BodyWrapper>
