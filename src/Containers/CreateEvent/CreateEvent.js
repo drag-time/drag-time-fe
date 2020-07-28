@@ -108,6 +108,15 @@ const RowOneWrapper = styled.section`
       }
     }
 
+    select {
+      width: 100%;
+      align-self: center;
+      font-family: 'Raleway', sans-serif;
+      border-radius: 10px;
+      opacity: 70%;
+      font-size: 1.4em;
+    }
+
     textarea {
       width: 100%;
       height: 100%;
@@ -135,19 +144,6 @@ const RowTwoWrapper = styled.section`
   width: 95%;
   height: 20%;
   padding: 1%;
-
-  select {
-    height: 33%;
-    width: 16%;
-    font-family: 'Raleway', sans-serif;
-    border-radius: 10px;
-    opacity: 70%;
-  }
-
-  input {
-    height: 25%;
-    width: 16%;
-  }
 `
 
 const RowThreeWrapper = styled.section`
@@ -242,29 +238,18 @@ const CreateEvent = (props) => {
   const [eventImage, setEventImage] = useState('');
   const [labels, setLabels] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
-  const [locationName, setLocationName] = useState('');
-  const [locationAddress, setLocationAddress] = useState('');
-  const [locationCity, setLocationCity] = useState('');
-  const [locationState, setLocationState] = useState('');
-  const [locationZip, setLocationZip] = useState('');
+  const [location, setLocation] = useState(0);
   const [eventCost, setEventCost] = useState(0);
   const [eventPerformers, setEventPerformers] = useState([]);
   const [isEventCreated, setIsEventCreated] = useState(false);
 
   const displayExistingLocations = () => {
-    const renderedOptions = eventList.data.reduce((acc, eventOption) => {
-      if (!acc.length) {
-        acc.push(<option id={eventOption.location.id} key={Number(eventOption.location.id)} value={eventOption.location.name} name={eventOption.location.name}>{eventOption.location.name}</option>)
-      } else {
-        let foundEvent = acc.find(matchingEvent => matchingEvent.props.id === eventOption.location.id)
-        if (!foundEvent) {
-          acc.push(<option id={eventOption.location.id} key={Number(eventOption.location.id)} value={eventOption.location.name} name={eventOption.location.name}>{eventOption.location.name}</option>)
-        }
-      }
+    const renderedOptions = locationList.reduce((acc, locationOption) => {
+      acc.push(<option id={locationOption.id} key={Number(locationOption.id)} value={locationOption.name} name={locationOption.name}>{locationOption.name}</option>)
       return acc;
-    }, []);
+    }, [])
     return (
-      <select onChange={makeLocationSelection}>
+      <select id="eventLocation" required onChange={makeLocationSelection}>
         <option value="">Choose Exising Location</option>
         {renderedOptions}
       </select>
@@ -272,21 +257,9 @@ const CreateEvent = (props) => {
   }
 
   const autoFillLocations = (e) => {
-    if (e.target.value !== '') {
-      const locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
-      const chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
-      setLocationName(chosenLocation.name);
-      setLocationAddress(chosenLocation.address);
-      setLocationCity(chosenLocation.city);
-      setLocationState(chosenLocation.state);
-      setLocationZip(chosenLocation.zip);
-    } else {
-      setLocationName('');
-      setLocationAddress('');
-      setLocationCity('');
-      setLocationState('');
-      setLocationZip('');
-    }
+    const locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
+    const chosenLocation = locationList.find(matchingLocation => matchingLocation.id === locationChoiceID);
+    setLocation(chosenLocation);
   }
 
   const makeLocationSelection = (e) => {
@@ -295,6 +268,7 @@ const CreateEvent = (props) => {
   }
 
   const updateFormState = (e) => {
+    let label = ''
     switch (e.target.id) {
       case 'eventName': setEventName(e.target.value);
         break;
@@ -306,22 +280,44 @@ const CreateEvent = (props) => {
         break;
       case 'eventDescription': setEventDescription(e.target.value);
         break;
-      case 'eventImage': setEventImage(e.target.value);
-        break;
-      case 'locationName': setLocationName(e.target.value);
-        break;
-      case 'streetAdress': setLocationAddress(e.target.value);
-        break;
-      case 'city': setLocationCity(e.target.value);
-        break;
-      case 'state': setLocationState(e.target.value);
-        break;
-      case 'zip': setLocationZip(e.target.value);
+      case 'imageURL': setEventImage(e.target.value);
         break;
       case 'eventCost': setEventCost(e.target.value);
         break;
       case 'eventPerformers': setEventPerformers(e.target.value.split(','));
-        console.log(eventPerformers);
+        break;
+      case 'eighteenPlus':
+          setLabels([...labels, '18+'])
+        break;
+      case 'twentyOnePlus':
+        setLabels([...labels, '21+'])
+        break;
+      case 'coverCharge':
+        setLabels([...labels, 'Cover Charge'])
+        break;
+      case 'dragKing':
+        setLabels([...labels, 'Drag King'])
+        break;
+      case 'dragQueen':
+        setLabels([...labels, 'Drag Queen'])
+        break;
+      case 'ballroom':
+        setLabels([...labels, 'Ballroom'])
+        break;
+      case 'pageant':
+        setLabels([...labels, 'Pageant'])
+        break;
+      case 'trivia':
+        setLabels([...labels, 'Trivia'])
+        break;
+      case 'musical':
+        setLabels([...labels, 'Musical'])
+        break;
+      case 'tribute':
+        setLabels([...labels, 'Tribute'])
+        break;
+      case 'horror':
+        setLabels([...labels, 'Horror'])
         break;
       default: return false;
     }
@@ -336,29 +332,17 @@ const CreateEvent = (props) => {
         description: eventDescription || '',
         end_time: endTime || '',
         start_time: startTime || '',
-        location: {
-          location: {
-            address: locationAddress,
-            city: locationCity || '',
-            name: locationName || '',
-            state: locationState || '',
-            zip: locationZip || '',
-          }
-        },
+        location_id: location.id || 0,
         title: eventName || '',
         type: 'event',
-        labels: [],
+        labels: labels,
         cost: eventCost || 0,
-        image: "image"
+        image: eventImage || ''
       }
     }
+    console.log(eventObject);
     setIsEventCreated(true);
     publishEvent(eventObject);
-    if (!isSelected) {
-      publishLocation(eventObject.event.location)
-    } else {
-      return;
-    }
   }
 
   useEffect(() => {
@@ -395,61 +379,51 @@ const CreateEvent = (props) => {
                 <textarea required onChange={(e) => updateFormState(e)} id="eventPerformers" rows="8" placeholder="Performers (please separate by comma)..."></textarea>
               </section>
               <section>
-                <input required onChange={(e) => updateFormState(e)} id="eventImage" name="uploadImage" type="file" placeholder="Choose an Image" accept="image/*" />
+                {!!eventList && !!locationList && displayExistingLocations()}
+                <input type="text" id="imageURL" required onChange={(e) => updateFormState(e)} placeholder="Image URL" />
               </section>
             </RowOneWrapper>
             <RowTwoWrapper>
-              {!!eventList && displayExistingLocations()}
-              {isSelected ? <p>{locationName}</p> :
-                <input id="locationName" onChange={(e) => updateFormState(e)} required type="text" placeholder="New Location Title"></input>
-              }
-              {isSelected ? <p>{locationAddress}</p> :
-                <input id="streetAdress" onChange={(e) => updateFormState(e)} required type="text" placeholder="Street Address"></input>
-              }
-              {isSelected ? <p>{locationCity}</p> :
-                <input id="city" onChange={(e) => updateFormState(e)} required type="text" placeholder="City"></input>
-              }
-              {isSelected ? <p>{locationState}</p> :
-                <input id="state" onChange={(e) => updateFormState(e)} required type="text" placeholder="State"></input>
-              }
-              {isSelected ? <p>{locationZip}</p> :
-                <input id="zip" onChange={(e) => updateFormState(e)} required type="text" placeholder="Zip"></input>
-              }
+              <p>{location.name}</p>
+              <p>{location.address}</p>
+              <p>{location.city}</p>
+              <p>{location.state}</p>
+              <p>{location.zip}</p>
             </RowTwoWrapper>
             <RowThreeWrapper>
               <section>
                 <label htmlFor="eighteenPlus">18+
-                  <input id="eighteenPlus" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="eighteenPlus" type="checkbox" />
                 </label>
                 <label htmlFor="twentyOnePlus">21+
-                  <input id="twentyOnePlus" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="twentyOnePlus" type="checkbox" />
                 </label>
                 <label htmlFor="coverCharge">Cover Charge
-                  <input id="coverCharge" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="coverCharge" type="checkbox" />
                 </label>
                 <label htmlFor="dragKing">Drag King
-                  <input id="dragKing" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="dragKing" type="checkbox" />
                 </label>
                 <label htmlFor="dragQueen">Drag Queen
-                  <input id="dragQueen" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="dragQueen" type="checkbox" />
                 </label>
                 <label htmlFor="ballroom">Ballroom
-                  <input id="ballroom" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="ballroom" type="checkbox" />
                 </label>
                 <label htmlFor="pageant">Pageant
-                  <input id="pageant" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="pageant" type="checkbox" />
                 </label>
                 <label htmlFor="trivia">Trivia
-                  <input id="trivia" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="trivia" type="checkbox" />
                 </label>
                 <label htmlFor="musical">Musical
-                  <input id="musical" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="musical" type="checkbox" />
                 </label>
                 <label htmlFor="tribute">Tribute
-                  <input id="tribute" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="tribute" type="checkbox" />
                 </label>
                 <label htmlFor="horror">Horror
-                  <input id="horror" type="checkbox" />
+                  <input onClick={(e) => updateFormState(e)} id="horror" type="checkbox" />
                 </label>
               </section>
               <button>Publish Event</button>
@@ -464,7 +438,7 @@ const CreateEvent = (props) => {
 const mapStateToProps = state => {
   return {
     eventList: state.displayEvents.eventList,
-    locationList: state.createEvent.locationList
+    locationList: state.createEvent.locationList.data
   }
 }
 
