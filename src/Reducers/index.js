@@ -24,7 +24,7 @@ const createEventInitialState = {
 // move all reducers into here, but have different switches
 // for groups of reducers
 
-const savedEvents = (state = savedEventInitialState, action) => {
+export const savedEvents = (state = savedEventInitialState, action) => {
   switch (action.type) {
     case 'ADD_RSVP':
       return {
@@ -56,7 +56,7 @@ const savedEvents = (state = savedEventInitialState, action) => {
   }
 }
 
-const displayEvents = (state = displayEventInitialState, action) => {
+export const displayEvents = (state = displayEventInitialState, action) => {
   switch (action.type) {
     case 'FIND_EVENT':
       return {
@@ -73,7 +73,7 @@ const displayEvents = (state = displayEventInitialState, action) => {
   }
 }
 
-const createEvent = (state = createEventInitialState, action) => {
+export const createEvent = (state = createEventInitialState, action) => {
   switch (action.type) {
     case 'GET_LOCATIONS':
       return {
@@ -94,7 +94,7 @@ const searchEventsInitialState = {
   searchTags: [],
 }
 
-const searchEvents = (state = searchEventsInitialState, action) => {
+export const searchEvents = (state = searchEventsInitialState, action) => {
   switch (action.type) {
     case 'SEARCH_TERM':
       return {

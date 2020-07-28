@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { searchForTerm, addTagToSearch, removeTagToSearch } from '../../Actions'
@@ -158,6 +158,8 @@ const SearchForm = (props) => {
       case 'horror':
         label = 'Horror'
         break;
+      default:
+        return false;
     }
     if (e.target.checked === true){
       addTagToSearch(label)

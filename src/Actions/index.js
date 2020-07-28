@@ -24,49 +24,40 @@ export function getLocations() {
   }
 }
 
-export function findEvent(events, eventID) {
-  return dispatch => {
-    let foundEvent = events.filter(event => Number(event.id) === Number(eventID));
-    return dispatch({
-      type: 'FIND_EVENT',
-      payload: foundEvent[0]
-    });
+export const findEvent = (events, eventID) => {
+  let foundEvent = events.filter(event => Number(event.id) === Number(eventID));
+  return {
+    type: 'FIND_EVENT',
+    payload: foundEvent[0]
   }
 }
 
 export function addRSVP(eventID) {
-  return dispatch => {
-    return dispatch({
-      type: 'ADD_RSVP',
-      payload: Number(eventID)
-    })
+  return {
+    type: 'ADD_RSVP',
+    payload: Number(eventID)
   }
 }
 
+
 export function removeRSVP(eventID) {
-  return dispatch => {
-    return dispatch({
-      type: 'REMOVE_RSVP',
-      payload: Number(eventID)
-    })
+  return {
+    type: 'REMOVE_RSVP',
+    payload: Number(eventID)
   }
 }
 
 export function addFavorite(eventID) {
-  return dispatch => {
-    return dispatch({
-      type: 'ADD_FAVORITE',
-      payload: Number(eventID)
-    })
+  return {
+    type: 'ADD_FAVORITE',
+    payload: Number(eventID)
   }
 }
 
 export function removeFavorite(eventID) {
-  return dispatch => {
-    return dispatch({
-      type: 'REMOVE_FAVORITE',
-      payload: Number(eventID)
-    })
+  return {
+    type: 'REMOVE_FAVORITE',
+    payload: Number(eventID)
   }
 }
 
@@ -81,7 +72,7 @@ export function publishEvent(eventObject) {
       body: raw,
       redirect: 'follow'
     };
-    return fetch("http://localhost:4000/api/events", requestOptions)
+    return fetch(process.env.REACT_APP_API_URL+'/api/events', requestOptions)
       .then(response => response.json())
       .then(result => console.log('result', result))
       .catch(error => console.log('error', error));
@@ -99,7 +90,7 @@ export function publishLocation(locationObject) {
       body: raw,
       redirect: 'follow'
     };
-    return fetch("http://localhost:4000/api/locations", requestOptions)
+    return fetch(process.env.REACT_APP_API_URL+'/api/locations', requestOptions)
       .then(response => response.json())
       .then(result => console.log('result', result))
       .catch(error => console.log('error', error));
@@ -107,54 +98,29 @@ export function publishLocation(locationObject) {
 }
 
 
-
-  //
-  // return fetch(process.env.REACT_APP_API_URL+"/api/events", {
-  //   method: 'POST',
-  //   body: JSON.stringify({"event":{
-  //     "title": "some drag show",
-  //     "cost": 50.00,
-  //     "description": "another drag show",
-  //     "date": "2010-04-17",
-  //     "start_time": "14:00:00",
-  //     "end_time": "14:00:00",
-  //     "image": "https://www.example.com/1.jpg",
-  //     "labels": ["18+"]
-  //   }
-  // })
-  // })
-  // .then(response => console.log(response))
-  // .then(response => {
-  //   return dispatch({
-  //     type: 'PUBLISH_EVENT',
-  //     payload: response
-  //   })
-  // })
-
-
-  export function searchForTerm(searchTerm) {
-    return dispatch => {
-      return dispatch({
-        type:'SEARCH_TERM',
-        payload: searchTerm.toUpperCase()
-      })
-    }
+export function searchForTerm(searchTerm) {
+  return dispatch => {
+    return dispatch({
+      type:'SEARCH_TERM',
+      payload: searchTerm.toUpperCase()
+    })
   }
+}
 
-  export function addTagToSearch(tag) {
-    return dispatch => {
-      return dispatch({
-        type:'ADD_TAG',
-        payload: tag
-      })
-    }
+export function addTagToSearch(tag) {
+  return dispatch => {
+    return dispatch({
+      type:'ADD_TAG',
+      payload: tag
+    })
   }
+}
 
-  export function removeTagToSearch(tag) {
-    return dispatch => {
-      return dispatch({
-        type:'REMOVE_TAG',
-        payload: tag
-      })
-    }
+export function removeTagToSearch(tag) {
+  return dispatch => {
+    return dispatch({
+      type:'REMOVE_TAG',
+      payload: tag
+    })
   }
+}
