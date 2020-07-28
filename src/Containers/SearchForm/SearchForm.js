@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { searchForTerm, addTagToSearch, removeTagToSearch } from '../../Actions'
 
 const Wrapper = styled.section`
   display: flex;
@@ -7,7 +9,7 @@ const Wrapper = styled.section`
   width: 20%;
   padding: 1%;
   background-color: #57123A;
-  height: 90%;
+  height: 100%;
   border-right: 1px solid white;
 
   input {
@@ -43,20 +45,11 @@ const Wrapper = styled.section`
     flex-direction: row;
     align-items: center;
     padding: 3%;
-    cursor: pointer;
     font-size: 1.1em;
     font-family: 'Raleway', sans-serif;
     color: white;
     border-bottom: 1px solid white;
     margin: 2%;
-
-    :hover input ~ span {
-      background-color: #A39743;
-      outline-offset: 15px;
-      text-shadow: 1px 1px 2px #427388;
-      box-shadow: inset 0 0 40px #A39743, 0 0 40px #A39743;
-      outline-color: #A39743;
-    }
 
     input {
       opacity: 0;
@@ -75,6 +68,7 @@ const Wrapper = styled.section`
 
     span {
       height: 22px;
+      cursor: pointer;
       width: 22px;
       background-color: #2299A3;
       margin-left: auto;
@@ -96,120 +90,150 @@ const Wrapper = styled.section`
   }
 `
 
+// const SearchForm = (props) => {
+//
+// }
+
+// switch back to functional component
+// connect to store, update form state
 
 const SearchForm = (props) => {
 
+    const { searchForTerm, addTagToSearch, removeTagToSearch } = props;
+    // super(props);
+    // this.state = {
+    //   keyword: '',
+    //   eighteenPlus: false,
+    //   twentyOnePlus: false,
+    //   coverCharge: false,
+    //   dragKing: false,
+    //   dragQueen: false,
+    //   ballroom: false,
+    //   pageant: false,
+    //   trivia: false,
+    //   musical: false,
+    //   tribute: false,
+    //   horror: false
+    // }
+
+
+  const trackKeyword = (e) => {
+    const searchTerm = e.target.value;
+    searchForTerm(searchTerm);
+  };
+
+  const trackLabels = (e) => {
+    let label = '';
+    switch (e.target.id) {
+      case 'eighteenPlus':
+        label = '18+'
+        break;
+      case 'twentyOnePlus':
+        label = '21+'
+        break;
+      case 'coverCharge':
+        label = 'Cover Charge'
+        break;
+      case 'dragKing':
+        label = 'Drag King'
+        break;
+      case 'dragQueen':
+        label = 'Drag Queen'
+        break;
+      case 'ballroom':
+        label = 'Ballroom'
+        break;
+      case 'pageant':
+        label = 'Pageant'
+        break;
+      case 'trivia':
+        label = 'Trivia'
+        break;
+      case 'musical':
+        label = 'Musical'
+        break;
+      case 'tribute':
+        label = 'Tribute'
+        break;
+      case 'horror':
+        label = 'Horror'
+        break;
+    }
+    if (e.target.checked === true){
+      addTagToSearch(label)
+    } else {
+      removeTagToSearch(label);
+    }
+  }
+
   return (
     <Wrapper>
-      <input type="text" placeholder="Search by keyword..." />
-      <label>18+
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>21+
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Cover Charge
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Drag King
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Drag Queen
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Ballroom
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Pageant
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Trivia
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Musical
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Tribute
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <label>Horror
-        <input type="checkbox" />
-        <span></span>
-      </label>
-      <button>Submit Search</button>
+      <form>
+        <input onChange={trackKeyword} type="text" placeholder="Search by keyword..." />
+        <label>18+
+          <input id="eighteenPlus" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>21+
+          <input id="twentyOnePlus" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Cover Charge
+          <input id="coverCharge" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Drag King
+          <input id="dragKing"onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Drag Queen
+          <input id="dragQueen" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Ballroom
+          <input id="ballroom" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Pageant
+          <input id="pageant"onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Trivia
+          <input id="trivia"onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Musical
+          <input id="musical" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Tribute
+          <input id="tribute" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+        <label>Horror
+          <input id="horror" onClick={trackLabels} type="checkbox" />
+          <span></span>
+        </label>
+      </form>
     </Wrapper>
   )
 }
 
-export default SearchForm;
 
-//
-// <TagWrapper>
-//   <input type="checkbox" id="18+" name="18+" value="18+" />
-//   <label for="18+">18+</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="21+" name="21+" value="21+" />
-//   <label for="21+">21+</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="cover-charge" name="cover-charge" value="cover-charge" />
-//   <label for="cover-charge">Cover Charge</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="drag-king" name="drag-king" value="drag-king" />
-//   <label for="drag-king">Drag King</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="drag-queen" name="drag-queen" value="drag-queen" />
-//   <label for="drag-queen">Drag Queen</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="ballroom" name="ballroom" value="ballroom" />
-//   <label for="ballroom">Ballroom</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="pageant" name="pageant" value="pageant" />
-//   <label for="pageant">Pageant</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="trivia" name="trivia" value="trivia" />
-//   <label for="trivia">Trivia</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="musical" name="musical" value="musical" />
-//   <label for="musical">Musical</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="horror" name="horror" value="horror" />
-//   <label for="horror">Horror</label>
-// </TagWrapper>
-// <TagWrapper>
-//   <input type="checkbox" id="tribute" name="tribute" value="tribute" />
-//   <label for="tribute">Tribute</label>
-// </TagWrapper>
+const mapStateToProps = state => {
+  return {
+  }
+}
 
-//
-// const TagWrapper = styled.section`
-//   display: flex;
-//   flex-direction: row;
-//   padding: 2%;
-//   align-items: center;
-//
-//   label {
-//     font-family: 'Raleway', sans-serif;
-//     font-size: 1.3em;
-//   }
-//   input {
-//
-//   }
+const mapDispatchToProps = dispatch => {
+  return {
+    searchForTerm: (searchTerm) => dispatch(searchForTerm(searchTerm)),
+    addTagToSearch: (tag) => dispatch(addTagToSearch(tag)),
+    removeTagToSearch: (tag) => dispatch(removeTagToSearch(tag))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchForm);

@@ -1,14 +1,31 @@
 import { combineReducers } from 'redux'
-import { EventContainerReducer } from './EventContainerReducer';
-import { EventDetailsReducer} from './EventDetailsReducers';
+
 //Combines reducers
 
-const initialState = {
+const savedEventInitialState = {
   userRSVPs: [],
   userFavorites: [],
+  locationList: []
 };
 
-const savedEvents = (state = initialState, action) => {
+const displayEventInitialState = {
+  eventList: [],
+  selectedEvent: {
+    location: {},
+    artists: [],
+    labels: []
+  }
+}
+
+const createEventInitialState = {
+  locationList: [],
+  eventList: []
+}
+
+// move all reducers into here, but have different switches
+// for groups of reducers
+
+const savedEvents = (state = savedEventInitialState, action) => {
   switch (action.type) {
     case 'ADD_RSVP':
       return {
@@ -17,7 +34,7 @@ const savedEvents = (state = initialState, action) => {
       }
     case 'ADD_FAVORITE':
       return {
-        ...state, 
+        ...state,
         userFavorites: [...state.userFavorites,action.payload],
       }
     case 'REMOVE_RSVP':
@@ -30,13 +47,79 @@ const savedEvents = (state = initialState, action) => {
         ...state,
         userFavorites: state.userFavorites.filter(event => event !== action.payload)
       }
-    default: 
+    case 'GET_LOCATIONS':
+      return {
+        ...state,
+        locationList: action.payload
+      }
+    default:
       return state
   }
-
 }
+
+const displayEvents = (state = displayEventInitialState, action) => {
+  switch (action.type) {
+    case 'FIND_EVENT':
+      return {
+        ...state,
+        selectedEvent: action.payload,
+      }
+    case 'GET_EVENTS':
+      return {
+        ...state,
+        eventList: action.payload,
+      }
+    default:
+      return state
+  }
+}
+
+const createEvent = (state = createEventInitialState, action) => {
+  switch (action.type) {
+    case 'GET_LOCATIONS':
+      return {
+        ...state,
+        locationList: action.payload
+      }
+    case 'PUBLISH_EVENT':
+      return {
+        ...state,
+      }
+    default:
+      return state
+  }
+}
+
+const searchEventsInitialState = {
+  searchTerm: '',
+  searchTags: [],
+}
+
+const searchEvents = (state = searchEventsInitialState, action) => {
+  switch (action.type) {
+    case 'SEARCH_TERM':
+      return {
+        ...state,
+        searchTerm: action.payload
+      }
+    case 'ADD_TAG':
+      return {
+        ...state,
+        searchTags: [...state.searchTags, action.payload]
+      }
+    case 'REMOVE_TAG':
+      return {
+        ...state,
+        searchTags: state.searchTags.filter(tag => tag !== action.payload)
+      }
+    default:
+      return state
+  }
+}
+
 export const rootReducer = combineReducers({
-  EventContainerReducer,
+  displayEvents,
   savedEvents,
-  EventDetailsReducer
+  createEvent,
+  searchEvents
 });

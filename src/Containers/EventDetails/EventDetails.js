@@ -66,6 +66,10 @@ const ButtonWrapper = styled.section`
   flex-direction: row;
   justify-content: space-around;
 
+  .small-text {
+    font-size: 1.1em;
+  }
+
   button {
     font-family: 'Raleway', sans-serif;
     font-size: 1.4em;
@@ -113,7 +117,7 @@ const EventDetails = (props) => {
     const checkRSVP = userRSVPs.filter(eventInRSVP => Number(eventID) === Number(eventInRSVP));
     if (!!checkRSVP.length){
       return (
-        <button onClick={()=> removeRSVP(eventID)}>Remove RSVP</button>
+        <button onClick={()=> removeRSVP(eventID)} className='small-text'>Remove RSVP</button>
       )
     } else {
       return (
@@ -126,7 +130,7 @@ const EventDetails = (props) => {
     const checkFavorite = userFavorites.filter(eventInFavorite => Number(eventInFavorite) === Number(eventID));
     if (!!checkFavorite.length){
       return (
-        <button onClick={()=> removeFavorite(eventID)}>Remove Favorite</button>
+        <button onClick={()=> removeFavorite(eventID)} className='small-text'>Remove Favorite</button>
       )
     } else {
       return (
@@ -138,7 +142,7 @@ const EventDetails = (props) => {
     return (
       <EventWrapper>
         <InfoWrapper>
-          <h2>{selectedEvent.title} | {selectedEvent.location.name}</h2>
+          <h2>{selectedEvent.title} | {selectedEvent.location.name} </h2>
           <ButtonWrapper>
             {!!userRSVPs && checkIfRSVP()}
             <button>Share</button>
@@ -161,7 +165,7 @@ const EventDetails = (props) => {
 
   useEffect(() => {
     findEvent(eventList, eventID)
-  }, [findEvent, eventID, eventList])
+  }, [findEvent, eventID, eventList, selectedEvent])
 
   return (
     <section>
@@ -173,8 +177,8 @@ const EventDetails = (props) => {
 
 const mapStateToProps = state => {
   return {
-    eventList: state.EventContainerReducer.eventList.data,
-    selectedEvent: state.EventDetailsReducer.selectedEvent,
+    eventList: state.displayEvents.eventList.data,
+    selectedEvent: state.displayEvents.selectedEvent,
     userFavorites: state.savedEvents.userFavorites,
     userRSVPs: state.savedEvents.userRSVPs,
   }
