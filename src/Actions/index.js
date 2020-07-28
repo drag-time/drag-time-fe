@@ -72,21 +72,62 @@ export function removeFavorite(eventID) {
 
 export function publishEvent(eventObject) {
   return dispatch => {
-    return fetch(process.env.REACT_APP_API_URL+'/api/events', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(eventObject)
-    })
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .then(response => {
-      return dispatch({
-        type: 'PUBLISH_EVENT',
-        payload: response
-      })
-    })
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(eventObject);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    return fetch("http://localhost:4000/api/events", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log('result', result))
+      .catch(error => console.log('error', error));
   }
 }
+
+export function publishLocation(locationObject) {
+  console.log(locationObject);
+  return dispatch => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify(locationObject);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    return fetch("http://localhost:4000/api/locations", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log('result', result))
+      .catch(error => console.log('error', error));
+  }
+}
+
+
+
+  //
+  // return fetch(process.env.REACT_APP_API_URL+"/api/events", {
+  //   method: 'POST',
+  //   body: JSON.stringify({"event":{
+  //     "title": "some drag show",
+  //     "cost": 50.00,
+  //     "description": "another drag show",
+  //     "date": "2010-04-17",
+  //     "start_time": "14:00:00",
+  //     "end_time": "14:00:00",
+  //     "image": "https://www.example.com/1.jpg",
+  //     "labels": ["18+"]
+  //   }
+  // })
+  // })
+  // .then(response => console.log(response))
+  // .then(response => {
+  //   return dispatch({
+  //     type: 'PUBLISH_EVENT',
+  //     payload: response
+  //   })
+  // })

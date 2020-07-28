@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../../Components/Header/Header.js';
 import { connect } from 'react-redux';
-import { getEvents, getLocations, publishEvent } from '../../Actions';
+import { getEvents, getLocations, publishEvent, publishLocation } from '../../Actions';
 
 const Wrapper = styled.section`
   display: flex;
@@ -195,7 +195,7 @@ const RowThreeWrapper = styled.section`
 
 const CreateEvent = (props) => {
 
-  const {eventList, locationList, getEvents, getLocations, publishEvent} = props;
+  const {eventList, locationList, getEvents, getLocations, publishEvent, publishLocation} = props;
 
   const [location, setLocation] = useState('');
   const [eventName, setEventName] = useState('');
@@ -206,6 +206,11 @@ const CreateEvent = (props) => {
   const [eventImage, setEventImage] = useState('');
   const [labels, setLabels] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
+  const [locationName, setLocationName] = useState('');
+  const [locationAddress, setLocationAddress] = useState('');
+  const [locationCity, setLocationCity] = useState('');
+  const [locationState, setLocationState] = useState('');
+  const [locationZip, setLocationZip] = useState('');
 
   const displayExistingLocations = () => {
     const renderedOptions = eventList.data.reduce((acc, eventOption) => {
@@ -228,10 +233,22 @@ const CreateEvent = (props) => {
   }
 
   const autoFillLocations = (e) => {
-    let locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
-    let chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
-    !e.target.value ? setIsSelected(false) : setIsSelected(true)
-    return setLocation(chosenLocation);
+    !!e.target.value ? setIsSelected(true) : setIsSelected(false);
+    if (isSelected) {
+      let locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
+      let chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
+      setLocationName(chosenLocation.name);
+      setLocationAddress(chosenLocation.address);
+      setLocationCity(chosenLocation.city);
+      setLocationState(chosenLocation.state);
+      setLocationZip(chosenLocation.zip);
+    } else {
+      setLocationName('');
+      setLocationAddress('');
+      setLocationCity('');
+      setLocationState('');
+      setLocationZip('');
+    }
   }
 
   const updateFormState = (e) => {
@@ -242,35 +259,48 @@ const CreateEvent = (props) => {
       case 'endTime': setEndTime(e.target.value);
       case 'eventDescription': setEventDescription(e.target.value);
       case 'eventImage': setEventImage(e.target.value);
-      case 'locationName': setLocation({...location, name: e.target.value});
-      case 'streetAdress': setLocation({...location, address: e.target.value});
-      case 'city': setLocation({...location, city: e.target.value});
-      case 'state': setLocation({...location, state: e.target.value});
-      case 'zip': setLocation({...location, zip: e.target.value});
+      case 'locationName': setLocationName(e.target.value);
+      case 'streetAdress': setLocationAddress(e.target.value);
+      case 'city': setLocationCity(e.target.value);
+      case 'state': setLocationState(e.target.value);
+      case 'zip': setLocationZip(e.target.value);
       default: return false;
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(locationAddress);
     const eventObject = {
-      date: eventDate || '',
-      description: eventDescription || '',
-      end_time: endTime || '',
-      start_time: startTime || '',
-      location: {
-        address: location.address || '',
-        city: location.city || '',
-        name: location.name || '',
-        state: location.state || '',
-        zip: location.zip || ''
-      },
-      title: eventName || '',
-      type: 'event',
-      labels: []
+      event: {
+        artists: [],
+        date: eventDate || '',
+        description: eventDescription || '',
+        end_time: endTime || '',
+        start_time: startTime || '',
+        location: {
+          location: {
+            address: locationAddress,
+            city: locationCity || '',
+            name: locationName || '',
+            state: locationState || '',
+            zip: locationZip || '',
+          }
+        },
+        title: eventName || '',
+        type: 'event',
+        labels: [],
+        cost: 50.00,
+        image: "image"
+      }
     }
-    console.log(eventObject);
-    return publishEvent(eventObject);
+    console.log('event object', eventObject);
+    publishEvent(eventObject);
+    if (!isSelected) {
+      publishLocation(eventObject.event.location)
+    } else {
+      return;
+    }
   }
 
   useEffect(() => {
@@ -306,19 +336,19 @@ const CreateEvent = (props) => {
           </RowOneWrapper>
           <RowTwoWrapper>
             {!!eventList && displayExistingLocations()}
-            {isSelected ? <p>{location.name}</p> :
+            {isSelected ? <p>{locationName}</p> :
               <input id="locationName" onChange={(e) => updateFormState(e)} required type="text" placeholder="New Location Title"></input>
             }
-            {isSelected ? <p>{location.address}</p> :
+            {isSelected ? <p>{locationAddress}</p> :
               <input id="streetAdress" onChange={(e) => updateFormState(e)} required type="text" placeholder="Street Address"></input>
             }
-            {isSelected ? <p>{location.city}</p> :
+            {isSelected ? <p>{locationCity}</p> :
               <input id="city" onChange={(e) => updateFormState(e)} required type="text" placeholder="City"></input>
             }
-            {isSelected ? <p>{location.state}</p> :
+            {isSelected ? <p>{locationState}</p> :
               <input id="state" onChange={(e) => updateFormState(e)} required type="text" placeholder="State"></input>
             }
-            {isSelected ? <p>{location.zip}</p> :
+            {isSelected ? <p>{locationZip}</p> :
               <input id="zip" onChange={(e) => updateFormState(e)} required type="text" placeholder="Zip"></input>
             }
           </RowTwoWrapper>
@@ -377,7 +407,8 @@ const mapDispatchToProps = dispatch => {
   return {
     getEvents: () => dispatch(getEvents()),
     getLocations: () => dispatch(getLocations()),
-    publishEvent: (eventObject) => dispatch(publishEvent(eventObject))
+    publishEvent: (eventObject) => dispatch(publishEvent(eventObject)),
+    publishLocation: (locationObject) => dispatch(publishLocation(locationObject))
   }
 }
 

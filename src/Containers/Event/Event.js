@@ -88,10 +88,10 @@ const ButtonWrapper = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  
+
   .small-text {
     font-size: .8em;
-  } 
+  }
 
   button {
     font-family: 'Raleway', sans-serif;
@@ -195,4 +195,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps)(Event)
 ;
-
