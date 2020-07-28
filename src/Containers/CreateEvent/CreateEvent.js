@@ -225,7 +225,7 @@ const CreateEvent = (props) => {
       return acc;
     }, []);
     return (
-      <select onChange={autoFillLocations}>
+      <select onChange={makeLocationSelection}>
         <option value="">Choose Exising Location</option>
         {renderedOptions}
       </select>
@@ -233,22 +233,26 @@ const CreateEvent = (props) => {
   }
 
   const autoFillLocations = (e) => {
-    !!e.target.value ? setIsSelected(true) : setIsSelected(false);
-    if (isSelected) {
-      let locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
-      let chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
-      setLocationName(chosenLocation.name);
-      setLocationAddress(chosenLocation.address);
-      setLocationCity(chosenLocation.city);
-      setLocationState(chosenLocation.state);
-      setLocationZip(chosenLocation.zip);
-    } else {
+    if (e.target.value === '') {
       setLocationName('');
       setLocationAddress('');
       setLocationCity('');
       setLocationState('');
       setLocationZip('');
+    } else {
+      const locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
+      const chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
+      setLocationName(chosenLocation.name);
+      setLocationAddress(chosenLocation.address);
+      setLocationCity(chosenLocation.city);
+      setLocationState(chosenLocation.state);
+      setLocationZip(chosenLocation.zip);
     }
+  }
+
+  const makeLocationSelection = (e) => {
+    !!e.target.value ? setIsSelected(true) : setIsSelected(false);
+    autoFillLocations(e)
   }
 
   const updateFormState = (e) => {
