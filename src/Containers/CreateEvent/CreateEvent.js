@@ -284,7 +284,6 @@ const CreateEvent = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(locationAddress); 
     const eventObject = {
       event: {
         artists: [],
@@ -308,7 +307,6 @@ const CreateEvent = (props) => {
         image: "image"
       }
     }
-    console.log('event object', eventObject);
     publishEvent(eventObject);
     if (!isSelected) {
       publishLocation(eventObject.event.location)

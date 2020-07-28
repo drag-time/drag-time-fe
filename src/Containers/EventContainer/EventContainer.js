@@ -64,8 +64,6 @@ const EventContainer = (props) => {
       searchTags.forEach(tag => tagLocations.push(event.labels.indexOf(tag)));
       return !tagLocations.includes(-1)
     })
-
-    console.log(filteredTagsEventList)
     const eventsToDisplay = filteredTagsEventList.map((event)=> {
       return(
         <Event key={event.id} {...event} />

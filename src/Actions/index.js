@@ -27,7 +27,6 @@ export function getLocations() {
 export function findEvent(events, eventID) {
   return dispatch => {
     let foundEvent = events.filter(event => Number(event.id) === Number(eventID));
-    console.log('findEvent',foundEvent)
     return dispatch({
       type: 'FIND_EVENT',
       payload: foundEvent[0]
@@ -90,7 +89,6 @@ export function publishEvent(eventObject) {
 }
 
 export function publishLocation(locationObject) {
-  console.log(locationObject);
   return dispatch => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
