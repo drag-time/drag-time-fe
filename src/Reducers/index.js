@@ -18,8 +18,7 @@ const displayEventInitialState = {
 }
 
 const createEventInitialState = {
-  locationList: [],
-  eventList: []
+  locationList: []
 }
 
 // move all reducers into here, but have different switches

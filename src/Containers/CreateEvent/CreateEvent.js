@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Header from '../../Components/Header/Header.js';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getEvents, getLocations, publishEvent, publishLocation } from '../../Actions';
 
@@ -107,6 +108,15 @@ const RowOneWrapper = styled.section`
       }
     }
 
+    select {
+      width: 100%;
+      align-self: center;
+      font-family: 'Raleway', sans-serif;
+      border-radius: 10px;
+      opacity: 70%;
+      font-size: 1.4em;
+    }
+
     textarea {
       width: 100%;
       height: 100%;
@@ -134,19 +144,6 @@ const RowTwoWrapper = styled.section`
   width: 95%;
   height: 20%;
   padding: 1%;
-
-  select {
-    height: 33%;
-    width: 16%;
-    font-family: 'Raleway', sans-serif;
-    border-radius: 10px;
-    opacity: 70%;
-  }
-
-  input {
-    height: 25%;
-    width: 16%;
-  }
 `
 
 const RowThreeWrapper = styled.section`
@@ -193,6 +190,42 @@ const RowThreeWrapper = styled.section`
   }
 `
 
+const EventCreatedHeader = styled.h3`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  background-color: rgba(0,0,0,0.8);
+  padding: 5%;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2em;
+  border-radius: 15px;
+  border: 1px solid white;
+  margin: auto;
+`
+
+const NavLinkStyled = styled(NavLink)`
+  font-family: 'Raleway', sans-serif;
+  font-size: .5em;
+  border: none;
+  background-color: #A39743;
+  color: white;
+  width: 60%;
+  border-radius: 15px;
+  margin: 5%;
+  padding: 4%;
+  text-decoration: none;
+
+  :hover {
+    cursor: pointer;
+    outline-offset: 15px;
+    text-shadow: 1px 1px 2px #427388;
+    box-shadow: inset 0 0 20px #A39743, 0 0 20px #A39743;
+    outline-color: #A39743;
+  }
+`
+
 const CreateEvent = (props) => {
 
   const {eventList, locationList, getEvents, getLocations, publishEvent, publishLocation} = props;
@@ -205,26 +238,18 @@ const CreateEvent = (props) => {
   const [eventImage, setEventImage] = useState('');
   const [labels, setLabels] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
-  const [locationName, setLocationName] = useState('');
-  const [locationAddress, setLocationAddress] = useState('');
-  const [locationCity, setLocationCity] = useState('');
-  const [locationState, setLocationState] = useState('');
-  const [locationZip, setLocationZip] = useState('');
+  const [location, setLocation] = useState(0);
+  const [eventCost, setEventCost] = useState(0);
+  const [eventPerformers, setEventPerformers] = useState([]);
+  const [isEventCreated, setIsEventCreated] = useState(false);
 
   const displayExistingLocations = () => {
-    const renderedOptions = eventList.data.reduce((acc, eventOption) => {
-      if (!acc.length) {
-        acc.push(<option id={eventOption.location.id} key={Number(eventOption.location.id)} value={eventOption.location.name} name={eventOption.location.name}>{eventOption.location.name}</option>)
-      } else {
-        let foundEvent = acc.find(matchingEvent => matchingEvent.props.id === eventOption.location.id)
-        if (!foundEvent) {
-          acc.push(<option id={eventOption.location.id} key={Number(eventOption.location.id)} value={eventOption.location.name} name={eventOption.location.name}>{eventOption.location.name}</option>)
-        }
-      }
+    const renderedOptions = locationList.reduce((acc, locationOption) => {
+      acc.push(<option id={locationOption.id} key={Number(locationOption.id)} value={locationOption.name} name={locationOption.name}>{locationOption.name}</option>)
       return acc;
-    }, []);
+    }, [])
     return (
-      <select onChange={makeLocationSelection}>
+      <select id="eventLocation" required onChange={makeLocationSelection}>
         <option value="">Choose Exising Location</option>
         {renderedOptions}
       </select>
@@ -232,21 +257,9 @@ const CreateEvent = (props) => {
   }
 
   const autoFillLocations = (e) => {
-    if (e.target.value !== '') {
-      const locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
-      const chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
-      setLocationName(chosenLocation.name);
-      setLocationAddress(chosenLocation.address);
-      setLocationCity(chosenLocation.city);
-      setLocationState(chosenLocation.state);
-      setLocationZip(chosenLocation.zip);
-    } else {
-      setLocationName('');
-      setLocationAddress('');
-      setLocationCity('');
-      setLocationState('');
-      setLocationZip('');
-    }
+    const locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
+    const chosenLocation = locationList.find(matchingLocation => matchingLocation.id === locationChoiceID);
+    setLocation(chosenLocation);
   }
 
   const makeLocationSelection = (e) => {
@@ -255,6 +268,7 @@ const CreateEvent = (props) => {
   }
 
   const updateFormState = (e) => {
+    let label = ''
     switch (e.target.id) {
       case 'eventName': setEventName(e.target.value);
         break;
@@ -266,17 +280,44 @@ const CreateEvent = (props) => {
         break;
       case 'eventDescription': setEventDescription(e.target.value);
         break;
-      case 'eventImage': setEventImage(e.target.value);
+      case 'imageURL': setEventImage(e.target.value);
         break;
-      case 'locationName': setLocationName(e.target.value);
+      case 'eventCost': setEventCost(e.target.value);
         break;
-      case 'streetAdress': setLocationAddress(e.target.value);
+      case 'eventPerformers': setEventPerformers(e.target.value.split(','));
         break;
-      case 'city': setLocationCity(e.target.value);
+      case 'eighteenPlus':
+          setLabels([...labels, '18+'])
         break;
-      case 'state': setLocationState(e.target.value);
+      case 'twentyOnePlus':
+        setLabels([...labels, '21+'])
         break;
-      case 'zip': setLocationZip(e.target.value);
+      case 'coverCharge':
+        setLabels([...labels, 'Cover Charge'])
+        break;
+      case 'dragKing':
+        setLabels([...labels, 'Drag King'])
+        break;
+      case 'dragQueen':
+        setLabels([...labels, 'Drag Queen'])
+        break;
+      case 'ballroom':
+        setLabels([...labels, 'Ballroom'])
+        break;
+      case 'pageant':
+        setLabels([...labels, 'Pageant'])
+        break;
+      case 'trivia':
+        setLabels([...labels, 'Trivia'])
+        break;
+      case 'musical':
+        setLabels([...labels, 'Musical'])
+        break;
+      case 'tribute':
+        setLabels([...labels, 'Tribute'])
+        break;
+      case 'horror':
+        setLabels([...labels, 'Horror'])
         break;
       default: return false;
     }
@@ -291,28 +332,17 @@ const CreateEvent = (props) => {
         description: eventDescription || '',
         end_time: endTime || '',
         start_time: startTime || '',
-        location: {
-          location: {
-            address: locationAddress,
-            city: locationCity || '',
-            name: locationName || '',
-            state: locationState || '',
-            zip: locationZip || '',
-          }
-        },
+        location_id: location.id || 0,
         title: eventName || '',
         type: 'event',
-        labels: [],
-        cost: 50.00,
-        image: "image"
+        labels: labels,
+        cost: eventCost || 0,
+        image: eventImage || ''
       }
     }
+    console.log(eventObject);
+    setIsEventCreated(true);
     publishEvent(eventObject);
-    if (!isSelected) {
-      publishLocation(eventObject.event.location)
-    } else {
-      return;
-    }
   }
 
   useEffect(() => {
@@ -323,87 +353,84 @@ const CreateEvent = (props) => {
   return(
     <Wrapper>
       <Header />
-      <FormWrapper>
-        <form onSubmit={handleSubmit}>
-          <h2>Create<span>Event</span></h2>
-          <RowOneWrapper>
-            <section>
-              <input required onChange={(e) => updateFormState(e)} id="eventName" type="text" placeholder="Name of Event" />
-              <input required onChange={(e) => updateFormState(e)} id="eventDate" type="date" />
-              <section className="time-wrapper">
-                <label htmlFor="startTime">Start Time</label>
-                <input required onChange={(e) => updateFormState(e)} id="startTime" type="time" />
+      {!!isEventCreated ? <EventCreatedHeader>Event Created!<NavLinkStyled to="/home">Back to Events</NavLinkStyled></EventCreatedHeader> :
+        <FormWrapper>
+          <form onSubmit={handleSubmit}>
+            <h2>Create<span>Event</span></h2>
+            <RowOneWrapper>
+              <section>
+                <input required onChange={(e) => updateFormState(e)} id="eventName" type="text" placeholder="Name of Event" />
+                <input required onChange={(e) => updateFormState(e)} id="eventDate" type="date" />
+                <section className="time-wrapper">
+                  <label htmlFor="eventCost">Event Cost</label>
+                  <input required onChange={(e) => updateFormState(e)} type="number" id="eventCost" placeholder="Cost" />
+                </section>
+                <section className="time-wrapper">
+                  <label htmlFor="startTime">Start Time</label>
+                  <input required onChange={(e) => updateFormState(e)} id="startTime" type="time" />
+                </section>
+                <section className="time-wrapper">
+                  <label htmlFor="endTime">End Time</label>
+                  <input required onChange={(e) => updateFormState(e)} id="endTime" type="time" />
+                </section>
               </section>
-              <section className="time-wrapper">
-                <label htmlFor="endTime">End Time</label>
-                <input required onChange={(e) => updateFormState(e)} id="endTime" type="time" />
+              <section>
+                <textarea required onChange={(e) => updateFormState(e)} id="eventDescription" rows="8" placeholder="Event Description..."></textarea>
+                <textarea required onChange={(e) => updateFormState(e)} id="eventPerformers" rows="8" placeholder="Performers (please separate by comma)..."></textarea>
               </section>
-            </section>
-            <section>
-              <textarea required onChange={(e) => updateFormState(e)} id="eventDescription" rows="15" placeholder="Event Description..."></textarea>
-            </section>
-            <section>
-              <input required onChange={(e) => updateFormState(e)} id="eventImage" name="uploadImage" type="file" placeholder="Choose an Image" accept="image/*" />
-            </section>
-          </RowOneWrapper>
-          <RowTwoWrapper>
-            {!!eventList && displayExistingLocations()}
-            {isSelected ? <p>{locationName}</p> :
-              <input id="locationName" onChange={(e) => updateFormState(e)} required type="text" placeholder="New Location Title"></input>
-            }
-            {isSelected ? <p>{locationAddress}</p> :
-              <input id="streetAdress" onChange={(e) => updateFormState(e)} required type="text" placeholder="Street Address"></input>
-            }
-            {isSelected ? <p>{locationCity}</p> :
-              <input id="city" onChange={(e) => updateFormState(e)} required type="text" placeholder="City"></input>
-            }
-            {isSelected ? <p>{locationState}</p> :
-              <input id="state" onChange={(e) => updateFormState(e)} required type="text" placeholder="State"></input>
-            }
-            {isSelected ? <p>{locationZip}</p> :
-              <input id="zip" onChange={(e) => updateFormState(e)} required type="text" placeholder="Zip"></input>
-            }
-          </RowTwoWrapper>
-          <RowThreeWrapper>
-            <section>
-              <label htmlFor="eighteenPlus">18+
-                <input id="eighteenPlus" type="checkbox" />
-              </label>
-              <label htmlFor="twentyOnePlus">21+
-                <input id="twentyOnePlus" type="checkbox" />
-              </label>
-              <label htmlFor="coverCharge">Cover Charge
-                <input id="coverCharge" type="checkbox" />
-              </label>
-              <label htmlFor="dragKing">Drag King
-                <input id="dragKing" type="checkbox" />
-              </label>
-              <label htmlFor="dragQueen">Drag Queen
-                <input id="dragQueen" type="checkbox" />
-              </label>
-              <label htmlFor="ballroom">Ballroom
-                <input id="ballroom" type="checkbox" />
-              </label>
-              <label htmlFor="pageant">Pageant
-                <input id="pageant" type="checkbox" />
-              </label>
-              <label htmlFor="trivia">Trivia
-                <input id="trivia" type="checkbox" />
-              </label>
-              <label htmlFor="musical">Musical
-                <input id="musical" type="checkbox" />
-              </label>
-              <label htmlFor="tribute">Tribute
-                <input id="tribute" type="checkbox" />
-              </label>
-              <label htmlFor="horror">Horror
-                <input id="horror" type="checkbox" />
-              </label>
-            </section>
-            <button>Publish Event</button>
-          </RowThreeWrapper>
-        </form>
-      </FormWrapper>
+              <section>
+                {!!eventList && !!locationList && displayExistingLocations()}
+                <input type="text" id="imageURL" required onChange={(e) => updateFormState(e)} placeholder="Image URL" />
+              </section>
+            </RowOneWrapper>
+            <RowTwoWrapper>
+              <p>{location.name}</p>
+              <p>{location.address}</p>
+              <p>{location.city}</p>
+              <p>{location.state}</p>
+              <p>{location.zip}</p>
+            </RowTwoWrapper>
+            <RowThreeWrapper>
+              <section>
+                <label htmlFor="eighteenPlus">18+
+                  <input onClick={(e) => updateFormState(e)} id="eighteenPlus" type="checkbox" />
+                </label>
+                <label htmlFor="twentyOnePlus">21+
+                  <input onClick={(e) => updateFormState(e)} id="twentyOnePlus" type="checkbox" />
+                </label>
+                <label htmlFor="coverCharge">Cover Charge
+                  <input onClick={(e) => updateFormState(e)} id="coverCharge" type="checkbox" />
+                </label>
+                <label htmlFor="dragKing">Drag King
+                  <input onClick={(e) => updateFormState(e)} id="dragKing" type="checkbox" />
+                </label>
+                <label htmlFor="dragQueen">Drag Queen
+                  <input onClick={(e) => updateFormState(e)} id="dragQueen" type="checkbox" />
+                </label>
+                <label htmlFor="ballroom">Ballroom
+                  <input onClick={(e) => updateFormState(e)} id="ballroom" type="checkbox" />
+                </label>
+                <label htmlFor="pageant">Pageant
+                  <input onClick={(e) => updateFormState(e)} id="pageant" type="checkbox" />
+                </label>
+                <label htmlFor="trivia">Trivia
+                  <input onClick={(e) => updateFormState(e)} id="trivia" type="checkbox" />
+                </label>
+                <label htmlFor="musical">Musical
+                  <input onClick={(e) => updateFormState(e)} id="musical" type="checkbox" />
+                </label>
+                <label htmlFor="tribute">Tribute
+                  <input onClick={(e) => updateFormState(e)} id="tribute" type="checkbox" />
+                </label>
+                <label htmlFor="horror">Horror
+                  <input onClick={(e) => updateFormState(e)} id="horror" type="checkbox" />
+                </label>
+              </section>
+              <button>Publish Event</button>
+            </RowThreeWrapper>
+          </form>
+        </FormWrapper>
+      }
     </Wrapper>
   );
 }
@@ -411,7 +438,7 @@ const CreateEvent = (props) => {
 const mapStateToProps = state => {
   return {
     eventList: state.displayEvents.eventList,
-    locationList: state.createEvent.locationList
+    locationList: state.createEvent.locationList.data
   }
 }
 

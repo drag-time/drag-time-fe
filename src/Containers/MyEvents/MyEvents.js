@@ -48,11 +48,14 @@ const EventWrapper = styled.section`
     }
   }
 
+  .my-event-title {
+    border-bottom: 1px solid white;
+  }
 
   .my-event-title,
   .missing-events {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -67,10 +70,18 @@ const EventWrapper = styled.section`
     background-color: black;
     padding: .5% 1%;
     opacity: 80%;
-    border-radius: 15px;
   }
 `
 
+const MissingEventsWrapper = styled.section`
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+
+  p {
+    padding: 7%;
+  }
+`
 
 
 const MyEvents = (props) => {
@@ -100,12 +111,18 @@ const MyEvents = (props) => {
             <h2>My<span>Events</span></h2>
             {!!userRSVPs.length && <h3 className="my-event-title">Events I'm Attending</h3>}
             {!!userRSVPs && displaySavedEvent(userRSVPs)}
-            {!userRSVPs.length && <h3 className="missing-events">RSVP to some drag events!</h3>}
+            {!userRSVPs.length && <MissingEventsWrapper className="missing-events">
+              <h3 className="my-event-title">Events I'm Attending</h3>
+              <p>You have not RSVP'd to any events yet. Head back to the events feed to RSVP!</p>
+            </MissingEventsWrapper>}
           </section>
           <section>
             {!!userFavorites.length && <h3 className="my-event-title">Favorited Events</h3>}
             {!!userFavorites && displaySavedEvent(userFavorites)}
-            {!userFavorites.length && <h3 className="missing-events">Favorite some drag events!</h3>}
+            {!userFavorites.length && <MissingEventsWrapper className="missing-events">
+              <h3 className="my-event-title">Favorite Events</h3>
+              <p>You have not favorited any events yet. Head back to the events feed to make some favorites!</p>
+            </MissingEventsWrapper>}
           </section>
         </EventWrapper>
       </BodyWrapper>
