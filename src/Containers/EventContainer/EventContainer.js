@@ -49,19 +49,24 @@ const EventWrapper = styled.section`
 
 const EventContainer = (props) => {
 
-  const {eventList, getEvents, searchTerm} = props;
+  const {eventList, getEvents, searchTerm, searchTags} = props;
 
   const displayEvents = () => {
     if (eventList.length === 0 ){
       return 'keep waiting'
     }
-
-    const filteredEventList = eventList.data.filter(event => {
-      return event.artists.map(artist => artist.name.toUpperCase()).includes(searchTerm) || event.description.toUpperCase().includes(searchTerm) || event.title.toUpperCase().includes(searchTerm) || event.location.name.includes(searchTerm)
+    
+    const filteredTermEventList = eventList.data.filter(event => {
+      return event.artists.find(artist => artist.name.toUpperCase().includes(searchTerm)) || event.description.toUpperCase().includes(searchTerm) || event.title.toUpperCase().includes(searchTerm) || event.location.name.toUpperCase().includes(searchTerm)
     });
-    console.log(filteredEventList)
+    const filteredTagsEventList = filteredTermEventList.filter(event => {
+      let tagLocations = [];
+      searchTags.forEach(tag => tagLocations.push(event.labels.indexOf(tag)));
+      return !tagLocations.includes(-1)
+    })
 
-    const eventsToDisplay = filteredEventList.map((event)=> {
+    console.log(filteredTagsEventList)
+    const eventsToDisplay = filteredTagsEventList.map((event)=> {
       return(
         <Event key={event.id} {...event} />
       )
@@ -91,6 +96,7 @@ const mapStateToProps = state => {
   return {
     eventList: state.displayEvents.eventList,
     searchTerm: state.searchEvents.searchTerm,
+    searchTags: state.searchEvents.searchTags,
   }
 }
 

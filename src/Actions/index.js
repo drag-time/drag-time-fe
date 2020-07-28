@@ -26,7 +26,8 @@ export function getLocations() {
 
 export function findEvent(events, eventID) {
   return dispatch => {
-    let foundEvent = events.filter(event => event.id === Number(eventID))
+    let foundEvent = events.filter(event => Number(event.id) === Number(eventID));
+    console.log('findEvent',foundEvent)
     return dispatch({
       type: 'FIND_EVENT',
       payload: foundEvent[0]
@@ -138,6 +139,24 @@ export function publishLocation(locationObject) {
       return dispatch({
         type:'SEARCH_TERM',
         payload: searchTerm.toUpperCase()
+      })
+    }
+  }
+
+  export function addTagToSearch(tag) {
+    return dispatch => {
+      return dispatch({
+        type:'ADD_TAG',
+        payload: tag
+      })
+    }
+  }
+
+  export function removeTagToSearch(tag) {
+    return dispatch => {
+      return dispatch({
+        type:'REMOVE_TAG',
+        payload: tag
       })
     }
   }

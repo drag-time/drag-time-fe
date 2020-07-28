@@ -197,7 +197,6 @@ const CreateEvent = (props) => {
 
   const {eventList, locationList, getEvents, getLocations, publishEvent, publishLocation} = props;
 
-  const [location, setLocation] = useState('');
   const [eventName, setEventName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -233,13 +232,7 @@ const CreateEvent = (props) => {
   }
 
   const autoFillLocations = (e) => {
-    if (e.target.value === '') {
-      setLocationName('');
-      setLocationAddress('');
-      setLocationCity('');
-      setLocationState('');
-      setLocationZip('');
-    } else {
+    if (e.target.value !== '') {
       const locationChoiceID = Number(e.target.options[e.target.selectedIndex].id);
       const chosenLocation = locationList.data.find(matchingLocation => matchingLocation.id === locationChoiceID);
       setLocationName(chosenLocation.name);
@@ -247,6 +240,12 @@ const CreateEvent = (props) => {
       setLocationCity(chosenLocation.city);
       setLocationState(chosenLocation.state);
       setLocationZip(chosenLocation.zip);
+    } else {
+      setLocationName('');
+      setLocationAddress('');
+      setLocationCity('');
+      setLocationState('');
+      setLocationZip('');
     }
   }
 
@@ -258,23 +257,34 @@ const CreateEvent = (props) => {
   const updateFormState = (e) => {
     switch (e.target.id) {
       case 'eventName': setEventName(e.target.value);
+        break;
       case 'eventDate': setEventDate(e.target.value);
+        break;
       case 'startTime': setStartTime(e.target.value);
+        break;
       case 'endTime': setEndTime(e.target.value);
+        break;
       case 'eventDescription': setEventDescription(e.target.value);
+        break;
       case 'eventImage': setEventImage(e.target.value);
+        break;
       case 'locationName': setLocationName(e.target.value);
+        break;
       case 'streetAdress': setLocationAddress(e.target.value);
+        break;
       case 'city': setLocationCity(e.target.value);
+        break;
       case 'state': setLocationState(e.target.value);
+        break;
       case 'zip': setLocationZip(e.target.value);
+        break;
       default: return false;
     }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(locationAddress);
+    console.log(locationAddress); 
     const eventObject = {
       event: {
         artists: [],

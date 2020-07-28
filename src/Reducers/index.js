@@ -10,7 +10,11 @@ const savedEventInitialState = {
 
 const displayEventInitialState = {
   eventList: [],
-  selectedEvent: {}
+  selectedEvent: {
+    location: {},
+    artists: [],
+    labels: []
+  }
 }
 
 const createEventInitialState = {
@@ -87,7 +91,8 @@ const createEvent = (state = createEventInitialState, action) => {
 }
 
 const searchEventsInitialState = {
-  searchTerm: ''
+  searchTerm: '',
+  searchTags: [],
 }
 
 const searchEvents = (state = searchEventsInitialState, action) => {
@@ -96,6 +101,16 @@ const searchEvents = (state = searchEventsInitialState, action) => {
       return {
         ...state,
         searchTerm: action.payload
+      }
+    case 'ADD_TAG':
+      return {
+        ...state,
+        searchTags: [...state.searchTags, action.payload]
+      }
+    case 'REMOVE_TAG':
+      return {
+        ...state,
+        searchTags: state.searchTags.filter(tag => tag !== action.payload)
       }
     default:
       return state

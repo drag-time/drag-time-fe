@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { searchForTerm } from '../../Actions'
+import { searchForTerm, addTagToSearch, removeTagToSearch } from '../../Actions'
 
 const Wrapper = styled.section`
   display: flex;
@@ -99,7 +99,7 @@ const Wrapper = styled.section`
 
 const SearchForm = (props) => {
 
-    const { searchForTerm } = props;
+    const { searchForTerm, addTagToSearch, removeTagToSearch } = props;
     // super(props);
     // this.state = {
     //   keyword: '',
@@ -118,28 +118,52 @@ const SearchForm = (props) => {
 
 
   const trackKeyword = (e) => {
-    // this.setState({
-    //   keyword: e.target.value
-    // });
     const searchTerm = e.target.value;
     searchForTerm(searchTerm);
   };
 
-  // trackLabels = (e) => {
-  //   const label = e.target.id;
-  //   if (!this.state[label]) {
-  //     this.setState({
-  //       [label]: true
-  //     })
-  //   } else {
-  //     this.setState({
-  //       [label]: false
-  //     })
-  //   }
-  // }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const trackLabels = (e) => {
+    let label = '';
+    switch (e.target.id) {
+      case 'eighteenPlus':
+        label = '18+'
+        break;
+      case 'twentyOnePlus':
+        label = '21+'
+        break;
+      case 'coverCharge':
+        label = 'Cover Charge'
+        break;
+      case 'dragKing':
+        label = 'Drag King'
+        break;
+      case 'dragQueen':
+        label = 'Drag Queen'
+        break;
+      case 'ballroom':
+        label = 'Ballroom'
+        break;
+      case 'pageant':
+        label = 'Pageant'
+        break;
+      case 'trivia':
+        label = 'Trivia'
+        break;
+      case 'musical':
+        label = 'Musical'
+        break;
+      case 'tribute':
+        label = 'Tribute'
+        break;
+      case 'horror':
+        label = 'Horror'
+        break;
+    }
+    if (e.target.checked === true){
+      addTagToSearch(label)
+    } else {
+      removeTagToSearch(label);
+    }
   }
 
   return (
@@ -147,50 +171,49 @@ const SearchForm = (props) => {
       <form>
         <input onChange={trackKeyword} type="text" placeholder="Search by keyword..." />
         <label>18+
-          <input type="checkbox" />
-          <span id="eighteenPlus"></span>
+          <input id="eighteenPlus" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>21+
-          <input type="checkbox" />
-          <span id="twentyOnePlus"></span>
+          <input id="twentyOnePlus" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Cover Charge
-          <input type="checkbox" />
-          <span id="coverCharge"></span>
+          <input id="coverCharge" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Drag King
-          <input type="checkbox" />
-          <span id="dragKing"></span>
+          <input id="dragKing"onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Drag Queen
-          <input type="checkbox" />
-          <span id="dragQueen"></span>
+          <input id="dragQueen" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Ballroom
-          <input type="checkbox" />
-          <span id="ballroom"></span>
+          <input id="ballroom" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Pageant
-          <input type="checkbox" />
-          <span id="pageant"></span>
+          <input id="pageant"onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Trivia
-          <input type="checkbox" />
-          <span id="trivia"></span>
+          <input id="trivia"onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Musical
-          <input type="checkbox" />
-          <span id="musical"></span>
+          <input id="musical" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Tribute
-          <input type="checkbox" />
-          <span id="tribute"></span>
+          <input id="tribute" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
         <label>Horror
-          <input type="checkbox" />
-          <span id="horror"></span>
+          <input id="horror" onClick={trackLabels} type="checkbox" />
+          <span></span>
         </label>
-        <button>Submit Search</button>
       </form>
     </Wrapper>
   )
@@ -204,7 +227,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    searchForTerm: (searchTerm) => dispatch(searchForTerm(searchTerm))
+    searchForTerm: (searchTerm) => dispatch(searchForTerm(searchTerm)),
+    addTagToSearch: (tag) => dispatch(addTagToSearch(tag)),
+    removeTagToSearch: (tag) => dispatch(removeTagToSearch(tag))
   }
 }
 

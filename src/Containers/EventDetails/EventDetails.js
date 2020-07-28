@@ -142,7 +142,7 @@ const EventDetails = (props) => {
     return (
       <EventWrapper>
         <InfoWrapper>
-          <h2>{selectedEvent.title} | {selectedEvent.location.name}</h2>
+          <h2>{selectedEvent.title} | {selectedEvent.location.name} </h2>
           <ButtonWrapper>
             {!!userRSVPs && checkIfRSVP()}
             <button>Share</button>
@@ -165,7 +165,7 @@ const EventDetails = (props) => {
 
   useEffect(() => {
     findEvent(eventList, eventID)
-  }, [findEvent, eventID, eventList])
+  }, [findEvent, eventID, eventList, selectedEvent])
 
   return (
     <section>
