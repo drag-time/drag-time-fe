@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Header from '../../Components/Header/Header.js';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { findEvent, addRSVP, addFavorite, removeFavorite, removeRSVP } from '../../Actions';
+import { findEvent, addRSVP, addFavorite, removeFavorite, removeRSVP, getEvents } from '../../Actions';
 
 const EventWrapper = styled.section`
   display: flex;
@@ -45,6 +45,11 @@ const InfoWrapper = styled.section`
     background-color: #57123A;
     margin: 1%;
     border-radius: 10px;
+  }
+
+  #shareableLink {
+    font-size: 1.2em;
+    background-color: #2299A3;
   }
 `
 
@@ -93,7 +98,7 @@ const ButtonWrapper = styled.section`
 
 const EventDetails = (props) => {
 
-  const {eventList, eventID, selectedEvent, findEvent, addRSVP, addFavorite, removeFavorite, removeRSVP, userFavorites, userRSVPs} = props;
+  const {eventList, eventID, getEvents, selectedEvent, findEvent, addRSVP, addFavorite, removeFavorite, removeRSVP, userFavorites, userRSVPs} = props;
 
   const displayPerformers = () => {
     const performers = selectedEvent.artists.map(artist => {
@@ -139,13 +144,13 @@ const EventDetails = (props) => {
   }
 
   const displayEventDetails = () => {
+    findEvent(eventList, eventID);
     return (
       <EventWrapper>
         <InfoWrapper>
           <h2>{selectedEvent.title} | {selectedEvent.location.name} </h2>
           <ButtonWrapper>
             {!!userRSVPs && checkIfRSVP()}
-            <button>Share</button>
             {!!userFavorites && checkIfFavorite()}
           </ButtonWrapper>
           <h4>{selectedEvent.description}</h4>
@@ -155,6 +160,8 @@ const EventDetails = (props) => {
           <h3>Start time: {selectedEvent.start_time}, End time: {selectedEvent.end_time}</h3>
           <h3>Address: {selectedEvent.location.address}</h3>
           <h3>Tags: {displayLabels()}</h3>
+          <label for="shareableLink">Share this Event</label>
+          <p id="shareableLink">Check out this drag event I'm attending via Drag Time! Click the link to see more details --> {window.location.href}</p>
         </InfoWrapper>
         <ImgWrapper>
           <img src={selectedEvent.image} alt={selectedEvent.title} />
@@ -164,13 +171,13 @@ const EventDetails = (props) => {
   }
 
   useEffect(() => {
-    findEvent(eventList, eventID)
-  }, [findEvent, eventID, eventList, selectedEvent])
+    getEvents();
+  }, [getEvents]);
 
   return (
     <section>
       <Header />
-        {!!selectedEvent && displayEventDetails()}
+        {!!eventList && displayEventDetails()}
     </section>
   )
 }
@@ -191,6 +198,7 @@ const mapDispatchToProps = dispatch => {
     addFavorite: (eventID) => dispatch(addFavorite(eventID)),
     removeFavorite: (eventID) => dispatch(removeFavorite(eventID)),
     removeRSVP: (eventID) => dispatch(removeRSVP(eventID)),
+    getEvents: () => dispatch(getEvents())
   }
 }
 
