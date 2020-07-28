@@ -49,13 +49,19 @@ const EventWrapper = styled.section`
 
 const EventContainer = (props) => {
 
-  const {eventList, getEvents} = props;
+  const {eventList, getEvents, searchTerm} = props;
 
   const displayEvents = () => {
     if (eventList.length === 0 ){
       return 'keep waiting'
     }
-    const eventsToDisplay = eventList.data.map((event)=> {
+
+    const filteredEventList = eventList.data.filter(event => {
+      return event.artists.map(artist => artist.name.toUpperCase()).includes(searchTerm) || event.description.toUpperCase().includes(searchTerm) || event.title.toUpperCase().includes(searchTerm) || event.location.name.includes(searchTerm)
+    });
+    console.log(filteredEventList)
+
+    const eventsToDisplay = filteredEventList.map((event)=> {
       return(
         <Event key={event.id} {...event} />
       )
@@ -84,6 +90,7 @@ const EventContainer = (props) => {
 const mapStateToProps = state => {
   return {
     eventList: state.displayEvents.eventList,
+    searchTerm: state.searchEvents.searchTerm,
   }
 }
 

@@ -86,9 +86,25 @@ const createEvent = (state = createEventInitialState, action) => {
   }
 }
 
+const searchEventsInitialState = {
+  searchTerm: ''
+}
+
+const searchEvents = (state = searchEventsInitialState, action) => {
+  switch (action.type) {
+    case 'SEARCH_TERM':
+      return {
+        ...state,
+        searchTerm: action.payload
+      }
+    default:
+      return state
+  }
+}
 
 export const rootReducer = combineReducers({
   displayEvents,
   savedEvents,
-  createEvent
+  createEvent,
+  searchEvents
 });

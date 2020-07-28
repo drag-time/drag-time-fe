@@ -131,3 +131,13 @@ export function publishLocation(locationObject) {
   //     payload: response
   //   })
   // })
+
+
+  export function searchForTerm(searchTerm) {
+    return dispatch => {
+      return dispatch({
+        type:'SEARCH_TERM',
+        payload: searchTerm.toUpperCase()
+      })
+    }
+  }

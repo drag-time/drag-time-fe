@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { searchForTerm } from '../../Actions'
 
 const Wrapper = styled.section`
   display: flex;
@@ -95,102 +97,118 @@ const Wrapper = styled.section`
 // switch back to functional component
 // connect to store, update form state
 
-class SearchForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      keyword: '',
-      eighteenPlus: false,
-      twentyOnePlus: false,
-      coverCharge: false,
-      dragKing: false,
-      dragQueen: false,
-      ballroom: false,
-      pageant: false,
-      trivia: false,
-      musical: false,
-      tribute: false,
-      horror: false
-    }
-  }
+const SearchForm = (props) => {
 
-  trackKeyword = (e) => {
-    this.setState({
-      keyword: e.target.value
-    });
+    const { searchForTerm } = props;
+    // super(props);
+    // this.state = {
+    //   keyword: '',
+    //   eighteenPlus: false,
+    //   twentyOnePlus: false,
+    //   coverCharge: false,
+    //   dragKing: false,
+    //   dragQueen: false,
+    //   ballroom: false,
+    //   pageant: false,
+    //   trivia: false,
+    //   musical: false,
+    //   tribute: false,
+    //   horror: false
+    // }
+
+
+  const trackKeyword = (e) => {
+    // this.setState({
+    //   keyword: e.target.value
+    // });
+    const searchTerm = e.target.value;
+    searchForTerm(searchTerm);
   };
 
-  trackLabels = (e) => {
-    const label = e.target.id;
-    if (!this.state[label]) {
-      this.setState({
-        [label]: true
-      })
-    } else {
-      this.setState({
-        [label]: false
-      })
-    }
-  }
+  // trackLabels = (e) => {
+  //   const label = e.target.id;
+  //   if (!this.state[label]) {
+  //     this.setState({
+  //       [label]: true
+  //     })
+  //   } else {
+  //     this.setState({
+  //       [label]: false
+  //     })
+  //   }
+  // }
 
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
   }
 
-  render() {
-    return (
-      <Wrapper>
-        <form>
-          <input onChange={this.trackKeyword} type="text" placeholder="Search by keyword..." />
-          <label>18+
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="eighteenPlus"></span>
-          </label>
-          <label>21+
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="twentyOnePlus"></span>
-          </label>
-          <label>Cover Charge
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="coverCharge"></span>
-          </label>
-          <label>Drag King
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="dragKing"></span>
-          </label>
-          <label>Drag Queen
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="dragQueen"></span>
-          </label>
-          <label>Ballroom
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="ballroom"></span>
-          </label>
-          <label>Pageant
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="pageant"></span>
-          </label>
-          <label>Trivia
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="trivia"></span>
-          </label>
-          <label>Musical
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="musical"></span>
-          </label>
-          <label>Tribute
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="tribute"></span>
-          </label>
-          <label>Horror
-            <input type="checkbox" />
-            <span onClick={this.trackLabels} id="horror"></span>
-          </label>
-          <button>Submit Search</button>
-        </form>
-      </Wrapper>
-    )
+  return (
+    <Wrapper>
+      <form>
+        <input onChange={trackKeyword} type="text" placeholder="Search by keyword..." />
+        <label>18+
+          <input type="checkbox" />
+          <span id="eighteenPlus"></span>
+        </label>
+        <label>21+
+          <input type="checkbox" />
+          <span id="twentyOnePlus"></span>
+        </label>
+        <label>Cover Charge
+          <input type="checkbox" />
+          <span id="coverCharge"></span>
+        </label>
+        <label>Drag King
+          <input type="checkbox" />
+          <span id="dragKing"></span>
+        </label>
+        <label>Drag Queen
+          <input type="checkbox" />
+          <span id="dragQueen"></span>
+        </label>
+        <label>Ballroom
+          <input type="checkbox" />
+          <span id="ballroom"></span>
+        </label>
+        <label>Pageant
+          <input type="checkbox" />
+          <span id="pageant"></span>
+        </label>
+        <label>Trivia
+          <input type="checkbox" />
+          <span id="trivia"></span>
+        </label>
+        <label>Musical
+          <input type="checkbox" />
+          <span id="musical"></span>
+        </label>
+        <label>Tribute
+          <input type="checkbox" />
+          <span id="tribute"></span>
+        </label>
+        <label>Horror
+          <input type="checkbox" />
+          <span id="horror"></span>
+        </label>
+        <button>Submit Search</button>
+      </form>
+    </Wrapper>
+  )
+}
+
+
+const mapStateToProps = state => {
+  return {
   }
 }
 
-export default SearchForm;
+const mapDispatchToProps = dispatch => {
+  return {
+    searchForTerm: (searchTerm) => dispatch(searchForTerm(searchTerm))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchForm);
