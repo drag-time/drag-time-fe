@@ -1,68 +1,61 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Drag Time 
 
-## Available Scripts
+## Abstract
 
-In the project directory, you can run:
+  Drag Time is an application to be used by performers and fans to find and create local drag events. Users can navigate to an event feed, favorite and RSVP to events, and create events. This was a group project completed in the final quarter of Turing's Software Development school. 
 
-### `npm start`
+## Objectives
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  * Coordinate with a backend team to display drag events on a web page.
+  * Utilize React, Redux, and React Hooks to render content.
+  * Build tests to validate expected functionality.
+  * Create a sleek and friendly user interface. 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Installation Instructions
 
-### `npm test`
+  1. Clone down this repo to your local machine.
+  2. Clone down the [backend repo](https://github.com/drag-time/drag-time-api) to your local machine.
+  3. In the root of the frontend directory, run:
+  ```
+    npm install
+    npm start
+  ```
+  4. In the root of the backend directory, run:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  ```
+    mix deps.get
+    mix phx.server
+  ```
+  5. Navigate to http://localhost:3000
 
-### `npm run build`
+## Deployment
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  Deployed site on netlify [here](https://inspiring-wescoff-a24deb.netlify.app/).
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Design
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  ![img](https://i.imgur.com/VYr5lnS.png)
+  ![img](https://i.imgur.com/TDNmssq.png)
+  ![img](https://i.imgur.com/VSwMunX.png)
 
-### `npm run eject`
+## Challenges and Difficulties
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  * Building out a Redux app from scratch
+  * Rendering stateful components 
+  * Testing asynchronous actions
+  * Syncing back-end with front-end 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Looking Ahead
+  * Access code for entertainers to create event
+  * Pagination of events
+  * Location identifier 
+  * Enabling further React Hooks
+  * User login
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Contributors
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+ * [Javi Aguilar (BE)](https://github.com/javier-aguilar)
+ * [Daniel Atkinson (BE)](https://github.com/danielbldr)
+ * [Travis Borgsmiller (BE)](https://github.com/TravisBorgsmiller)
+ * [Collin Kallery (FE)](https://github.com/collinkallery)
+ * [Kyle Williams (FE)](https://github.com/KCWill)
