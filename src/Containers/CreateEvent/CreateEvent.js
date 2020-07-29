@@ -228,7 +228,7 @@ const NavLinkStyled = styled(NavLink)`
 
 const CreateEvent = (props) => {
 
-  const {eventList, locationList, getEvents, getLocations, publishEvent, publishLocation} = props;
+  const {eventList, locationList, getEvents, getLocations, publishEvent} = props;
 
   const [eventName, setEventName] = useState('');
   const [eventDate, setEventDate] = useState('');
@@ -268,7 +268,6 @@ const CreateEvent = (props) => {
   }
 
   const updateFormState = (e) => {
-    let label = ''
     switch (e.target.id) {
       case 'eventName': setEventName(e.target.value);
         break;
@@ -340,7 +339,6 @@ const CreateEvent = (props) => {
         image: eventImage || ''
       }
     }
-    console.log(eventObject);
     setIsEventCreated(true);
     publishEvent(eventObject);
   }
