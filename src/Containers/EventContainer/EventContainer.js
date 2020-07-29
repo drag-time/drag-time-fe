@@ -53,9 +53,9 @@ const EventContainer = (props) => {
 
   const displayEvents = () => {
     if (eventList.length === 0 ){
-      return 'keep waiting'
+      return <h3>Retrieving Your Events</h3>
     }
-
+    
     const filteredTermEventList = eventList.data.filter(event => {
       return event.artists.find(artist => artist.name.toUpperCase().includes(searchTerm)) || event.description.toUpperCase().includes(searchTerm) || event.title.toUpperCase().includes(searchTerm) || event.location.name.toUpperCase().includes(searchTerm)
     });

@@ -160,7 +160,7 @@ const EventDetails = (props) => {
           <h3>Start time: {selectedEvent.start_time}, End time: {selectedEvent.end_time}</h3>
           <h3>Address: {selectedEvent.location.address}</h3>
           <h3>Tags: {displayLabels()}</h3>
-          <label for="shareableLink">Share this Event</label>
+          <label htmlFor="shareableLink">Share this Event</label>
           <p id="shareableLink">Check out this drag event I'm attending via Drag Time! Click the link to see more details --> {window.location.href}</p>
         </InfoWrapper>
         <ImgWrapper>
